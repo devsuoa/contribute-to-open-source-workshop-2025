@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+.statusBar {
+  @apply flex items-center justify-between;
+}
+
+.logo {
+  @apply h-12 w-auto hover:opacity-80 transition-opacity;
+}
+
+.avatar {
+  @apply w-10 h-10 rounded-full cursor-pointer object-cover;
+}
+
+.menuContent {
+  @apply w-44 border border-[#2F2F2F];
+}
+
+.menuItem {
+  @apply cursor-pointer;
+}

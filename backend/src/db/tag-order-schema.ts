@@ -1,0 +1,8 @@
+import mongoose, { Schema } from "mongoose";
+
+const tagOrderSchema = new Schema({
+  scope: { type: String, default: "global", unique: true },
+  order: [{ type: String, required: true }],
+});
+
+export default mongoose.model("TagOrder", tagOrderSchema);

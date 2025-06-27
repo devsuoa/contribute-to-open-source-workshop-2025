@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+.card {
+  @apply flex flex-col h-full min-h-0 p-6 rounded-xl bg-[#171717] border border-[#2F2F2F];
+}
+
+.heading {
+  @apply text-xl font-semibold mb-2 select-none;
+}
+
+.scrollArea {
+  @apply flex-1 min-h-0 overflow-auto -mr-4.5 pr-4 select-none;
+}
+
+.subCard {
+  @apply bg-[#1f1f1f] border border-[#2f2f2f] rounded-xl p-4 mt-4;
+}
+
+.constraintsList {
+  @apply list-disc ml-6 mt-2;
+}
+
+.bulletList {
+  @apply list-disc ml-6 mt-2;
+}
+
+.accordionItem {
+  @apply border-b border-[#2F2F2F] last:border-b-0;
+}
+
+.accordionTrigger {
+  @apply flex justify-between items-center gap-2 cursor-pointer hover:no-underline py-4 [&[data-state=open]>svg]:rotate-0;
+}
+
+.accordionContent {
+  @apply pb-4;
+}

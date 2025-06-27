@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.page {
+  @apply flex flex-col gap-4 p-4;
+}
+
+.statusBar {
+  @apply mb-2;
+}

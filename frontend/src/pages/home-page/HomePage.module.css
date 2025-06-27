@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+.page {
+  @apply flex flex-col gap-4 p-4 pb-8;
+}
+
+.statusBar {
+  @apply mb-2;
+}
+
+.sectionHeading {
+  @apply text-3xl font-bold;
+}
+
+.loadingRow {
+  @apply flex items-center gap-2 text-[#C5C5C5];
+}
+
+.loadingRow--mb {
+  @apply flex items-center gap-2 text-[#C5C5C5] mb-8;
+}
+
+.emptyUpcoming {
+  @apply text-[#C5C5C5] mb-8;
+}
+
+.emptyPast {
+  @apply text-[#C5C5C5];
+}
+
+.cardsGrid {
+  @apply grid gap-6
+    grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5
+    mb-4;
+}

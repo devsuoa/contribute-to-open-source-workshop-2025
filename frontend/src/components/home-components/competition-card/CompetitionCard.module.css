@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+.card {
+  @apply bg-[#171717] border-[#2F2F2F] text-white shadow hover:shadow-lg
+    transition w-full h-full;
+}
+
+.cardContent {
+  @apply space-y-2 text-sm;
+}
+
+.title {
+  @apply text-xl font-bold truncate;
+}
+
+.row {
+  @apply flex items-center gap-2 text-white;
+}
+
+.iconDate {
+  @apply text-[#EF4444];
+}
+
+.dateText {
+  @apply text-[#C5C5C5];
+}
+
+.button {
+  @apply mt-3 w-full bg-white text-black font-semibold px-4 py-2 rounded-lg
+    flex items-center justify-center gap-2 hover:bg-gray-200 transition
+    cursor-pointer;
+}

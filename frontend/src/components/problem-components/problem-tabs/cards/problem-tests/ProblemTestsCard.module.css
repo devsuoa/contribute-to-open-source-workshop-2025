@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+.card {
+  @apply flex flex-col h-full min-h-0 p-6 rounded-xl bg-[#171717] border border-[#2F2F2F];
+}
+
+.heading {
+  @apply text-xl font-semibold mb-3;
+}
+
+.scrollArea {
+  @apply flex-1 min-h-0 overflow-auto -mr-4.5 pr-4;
+}
+
+.testResult {
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: white;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+  border-width: 1px;
+}
+
+.pass {
+  background-color: #10b981;
+  border-color: #6ee7b7;
+}
+
+.fail {
+  background-color: #ef4445;
+  border-color: #fca5a5;
+}
+
+.error {
+  margin-top: 0.5rem;
+  font-style: italic;
+  color: #fca5a5;
+}
+
+.spinnerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transform: translateY(-2rem);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+.emptyWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transform: translateY(-2rem);
+  color: #b0b0b0;
+}

@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+.buttonRow {
+  @apply flex justify-between items-center;
+}
+
+.leftButtons {
+  @apply flex gap-2;
+}
+
+.rightButtons {
+  @apply flex gap-2;
+}
+
+.iconButton {
+  @apply cursor-pointer;
+}
+
+.iconInfo {
+  @apply text-[#818CF8];
+}
+
+.iconReset {
+  @apply text-[#F87171];
+}
+
+.iconSubmit {
+  @apply text-[#34D399];
+}

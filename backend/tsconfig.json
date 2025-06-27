@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    // Modern JS target
+    "target": "ES2022",
+    "module": "ES2022",
+    // Root and output directories
+    "rootDir": "src",
+    "outDir": "dist",
+    // Module resolution for Node
+    "moduleResolution": "node",
+    // Required for importing .json and default exports
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    // Type safety
+    "strict": true,
+    // For performance
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

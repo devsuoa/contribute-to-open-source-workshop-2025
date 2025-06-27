@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+}
+
+.contentRow {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+.leftPane {
+  width: 40%;
+  height: 100%;
+}
+
+.rightPane {
+  width: 60%;
+  height: 100%;
+}

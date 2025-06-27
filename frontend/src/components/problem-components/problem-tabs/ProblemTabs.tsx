@@ -1,0 +1,44 @@
+// ProblemTabs.tsx
+import styles from "./ProblemTabs.module.css";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProblemDescriptionCard from "./cards/problem-description/ProblemDescriptionCard";
+import ProblemTestsCard from "./cards/problem-tests/ProblemTestsCard";
+
+import { useProblem } from "@/contexts/ProblemContext";
+import ProblemConsoleCard from "./cards/problem-console/ProblemConsoleCard";
+
+export function ProblemTabs() {
+  const { activeTab, setActiveTab } = useProblem();
+
+  return (
+    <div className={styles.wrapper}>
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className={styles.tabs}
+      >
+        <TabsList className={styles.tabsList}>
+          <TabsTrigger value="problem" className={styles.tabsTrigger}>
+            Problem
+          </TabsTrigger>
+          <TabsTrigger value="console" className={styles.tabsTrigger}>
+            Console
+          </TabsTrigger>
+          <TabsTrigger value="tests" className={styles.tabsTrigger}>
+            Tests
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="problem" className={styles.tabsContent}>
+          <ProblemDescriptionCard />
+        </TabsContent>
+        <TabsContent value="console" className={styles.tabsContent}>
+          <ProblemConsoleCard />
+        </TabsContent>
+        <TabsContent value="tests" className={styles.tabsContent}>
+          <ProblemTestsCard />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

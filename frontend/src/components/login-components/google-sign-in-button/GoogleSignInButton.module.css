@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.button {
+  @apply rounded-full text-lg p-6 flex items-center gap-4 cursor-pointer;
+}
+
+.logo {
+  @apply w-6 h-6 -ml-2.5;
+}

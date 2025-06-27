@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+.wrapper {
+  @apply flex flex-col gap-3 h-full min-h-0;
+  overflow-x: hidden;
+}
+
+.buttonRow {
+  @apply flex justify-between items-center;
+}
+
+.leftButtons {
+  @apply flex gap-2;
+}
+
+.iconButton {
+  @apply cursor-pointer;
+}
+
+.iconInfo {
+  @apply text-[#818CF8];
+}
+
+.iconReset {
+  @apply text-[#F87171];
+}
+
+.iconSubmit {
+  @apply text-[#34D399];
+}
+
+.card {
+  @apply flex flex-col h-full min-h-0 p-6 rounded-xl bg-[#171717] border border-[#2F2F2F];
+  overflow-x: hidden;
+}
+
+.scrollArea {
+  @apply flex-1 min-h-0 overflow-y-auto pr-2;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+.scrollArea > div {
+  transition:
+    transform 0.3s ease-out,
+    margin-top 0.3s ease-out;
+}
+
+.blockContainer {
+  @apply flex transition-all duration-300;
+}
+
+.justifyCenter {
+  @apply justify-center;
+}
+
+.justifyStart {
+  @apply justify-start;
+}
+
+.innerBlock {
+  @apply transition-all duration-300;
+}
+
+.fullWidth {
+  @apply w-full max-w-full;
+}
+
+.loadingBlock {
+  @apply max-w-[200px] opacity-70;
+}
+
+.slideDown {
+  will-change: transform, opacity;
+  animation: slideFade 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.expandAnimation {
+  animation: expandContent 0.4s ease-out forwards;
+}
+
+@keyframes slideFade {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes expandContent {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+    max-height: 60px;
+  }
+  50% {
+    transform: scale(1.02);
+    max-height: 200px;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    max-height: 300px;
+  }
+}
