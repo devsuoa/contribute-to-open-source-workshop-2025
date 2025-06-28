@@ -1,5 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
+/**
+ * Schema for a problem document.
+ * Contains metadata about the problem, its function signatures, sample input/output,
+ * constraints, and test cases.
+ */
 const problemSchema = new Schema({
   name: {
     type: String,

@@ -17,8 +17,18 @@ import {
 import type { Language } from "@/types/types";
 import { FunctionBuilder } from "@/utility/FunctionBuilder";
 import type { TestResult } from "@/types/types";
+import { toast } from "sonner";
+import { useParams } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CodeEditorControls = () => {
+  const { firebaseUser } = useAuth();
+  const { competitionId, problemId } = useParams<{
+    competitionId: string;
+    problemId: string;
+  }>();
+  const { problemPoints } = useProblem();
+
   const {
     testCases,
     setTestResults,
@@ -30,6 +40,35 @@ const CodeEditorControls = () => {
     setCode,
     functionSignatures,
   } = useProblem();
+
+  const showSuccessToast = () => {
+    toast.success("🎉 All tests passed! Beautiful work! 🌟", {
+      description: "Your code sparkles with perfection ✨",
+      duration: 4000,
+    });
+  };
+
+  const showFailureToast = (passedCount: number, totalCount: number) => {
+    const failedCount = totalCount - passedCount;
+    const encouragement = [
+      "Keep coding, you're getting closer! 💪",
+      "Every bug is a step toward mastery! 🐛➡️🦋",
+      "Debugging is like solving a puzzle! 🧩",
+      "Great coders debug with style! 🕶️",
+      "This is where the magic happens! ✨",
+    ];
+
+    const randomEncouragement =
+      encouragement[Math.floor(Math.random() * encouragement.length)];
+
+    toast.error(
+      `❌ ${failedCount} test${failedCount > 1 ? "s" : ""} failed (${passedCount}/${totalCount} passed)`,
+      {
+        description: randomEncouragement,
+        duration: 5000,
+      },
+    );
+  };
 
   const handleSubmit = async () => {
     setIsLoadingTestResults(true);
@@ -44,6 +83,38 @@ const CodeEditorControls = () => {
       setIsLoadingTestResults(false);
       return;
     }
+
+    const markSolved = async () => {
+      if (!competitionId || !problemId || !firebaseUser?.email) return;
+
+      await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/${firebaseUser.email}/solve`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            problem: problemId,
+            addPoints: problemPoints ?? 0,
+          }),
+        },
+      );
+    };
+
+    const createSubmission = async (verdict: string) => {
+      if (!competitionId || !problemId || !firebaseUser?.email) return;
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/submissions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          competition: competitionId,
+          problem: problemId,
+          user: firebaseUser.email,
+          language: preferredLanguage,
+          sourceCode: code,
+          verdict,
+        }),
+      });
+    };
 
     // Split the current editor contents into lines for piston
     const functionLines = code
@@ -98,6 +169,21 @@ const CodeEditorControls = () => {
 
     setTestResults(newResults);
     setIsLoadingTestResults(false);
+
+    const passedTests = newResults.filter((result) => result.pass).length;
+    const totalTests = newResults.length;
+
+    if (passedTests === totalTests && totalTests > 0) {
+      await markSolved();
+      await createSubmission("ACCEPTED");
+      window.dispatchEvent(
+        new CustomEvent("points:add", { detail: problemPoints ?? 0 }),
+      );
+      showSuccessToast();
+    } else {
+      await createSubmission("WRONG ANSWER");
+      showFailureToast(passedTests, totalTests);
+    }
   };
 
   const handleReset = () => {

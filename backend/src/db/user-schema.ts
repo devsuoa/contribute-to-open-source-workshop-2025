@@ -1,5 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
+/**
+ * Schema for a user document.
+ * Contains user metadata such as email, nickname, year level, and preferred programming language.
+ */
 const userSchema = new Schema({
   email: {
     type: String,

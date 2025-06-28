@@ -40,6 +40,14 @@ const StatusBarCompetition = () => {
 
   /* Fetch points & set live countdown */
   useEffect(() => {
+    const handler = (e: Event) => {
+      setPoints((prev) => (prev ?? 0) + (e as CustomEvent<number>).detail);
+    };
+    window.addEventListener("points:add", handler);
+    return () => window.removeEventListener("points:add", handler);
+  }, []);
+
+  useEffect(() => {
     if (!competitionId || !firebaseUser) return;
 
     let intervalId: ReturnType<typeof setInterval> | undefined;
@@ -47,7 +55,7 @@ const StatusBarCompetition = () => {
     const init = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=${firebaseUser.uid}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=${firebaseUser.email}`,
         );
 
         setPoints(typeof data.points === "number" ? data.points : 0);

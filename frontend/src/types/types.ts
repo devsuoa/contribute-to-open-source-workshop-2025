@@ -58,6 +58,7 @@ export interface ProblemProps {
 }
 
 export interface ProblemContextType {
+  problemId: string;
   problemName: string;
   problemDescription: string;
   problemFunctionHeader: string;

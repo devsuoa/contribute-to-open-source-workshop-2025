@@ -5,16 +5,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProblemCard from "@/components/competition-components/problem-card/ProblemCard";
 import styles from "./CompetitionProblemSet.module.css";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Problem {
   _id: string;
   name: string;
   problemPoints: number;
   problemTag?: string;
+  solved?: boolean;
 }
 
 const CompetitionProblemSet = () => {
   const navigate = useNavigate();
+  const { firebaseUser } = useAuth();
   const { competitionId } = useParams();
   const [data, setData] = useState<Record<string, Problem[]>>({});
   const [loading, setLoading] = useState(true);
@@ -24,9 +27,14 @@ const CompetitionProblemSet = () => {
 
     (async () => {
       try {
-        const res = await axios.get<Record<string, Problem[]>>(
-          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/problems`,
-        );
+        const base = import.meta.env.VITE_API_BASE_URL;
+        const url =
+          `${base}/api/competitions/${competitionId}/problems` +
+          (firebaseUser?.email
+            ? `?user=${encodeURIComponent(firebaseUser.email)}`
+            : "");
+
+        const res = await axios.get<Record<string, Problem[]>>(url);
         setData(res.data);
       } catch (err) {
         console.error("Error fetching problem set:", err);
@@ -34,7 +42,7 @@ const CompetitionProblemSet = () => {
         setLoading(false);
       }
     })();
-  }, [competitionId]);
+  }, [competitionId, firebaseUser?.email]);
 
   return (
     <div className={styles.page}>
@@ -69,6 +77,7 @@ const CompetitionProblemSet = () => {
                 name={p.name}
                 points={p.problemPoints}
                 problemId={p._id}
+                solved={p.solved}
               />
             ))}
           </div>

@@ -6,6 +6,7 @@ import ProblemTestsCard from "./cards/problem-tests/ProblemTestsCard";
 
 import { useProblem } from "@/contexts/ProblemContext";
 import ProblemConsoleCard from "./cards/problem-console/ProblemConsoleCard";
+import ProblemSubmissionsCard from "./cards/problem-submissions/ProblemSubmissionsCard";
 
 export function ProblemTabs() {
   const { activeTab, setActiveTab } = useProblem();
@@ -27,6 +28,9 @@ export function ProblemTabs() {
           <TabsTrigger value="tests" className={styles.tabsTrigger}>
             Tests
           </TabsTrigger>
+          <TabsTrigger value="submissions" className={styles.tabsTrigger}>
+            Submissions
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="problem" className={styles.tabsContent}>
@@ -37,6 +41,9 @@ export function ProblemTabs() {
         </TabsContent>
         <TabsContent value="tests" className={styles.tabsContent}>
           <ProblemTestsCard />
+        </TabsContent>
+        <TabsContent value="submissions" className={styles.tabsContent}>
+          <ProblemSubmissionsCard />
         </TabsContent>
       </Tabs>
     </div>

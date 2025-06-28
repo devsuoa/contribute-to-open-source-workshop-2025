@@ -13,6 +13,7 @@ const ProblemContext = createContext<ProblemContextType | undefined>(undefined);
 
 export const ProblemProvider = ({
   children,
+  problemId,
   problemName,
   problemDescription,
   problemFunctionHeader,
@@ -54,6 +55,7 @@ export const ProblemProvider = ({
   return (
     <ProblemContext.Provider
       value={{
+        problemId,
         problemName,
         problemDescription,
         problemFunctionHeader,

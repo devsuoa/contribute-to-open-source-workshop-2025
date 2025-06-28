@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+.card {
+  @apply flex flex-col h-full min-h-0 p-6 rounded-xl bg-[#171717] border border-[#2F2F2F];
+}
+
+.heading {
+  @apply text-xl font-semibold mb-3;
+}
+
+.scrollArea {
+  @apply flex-1 min-h-0 overflow-auto -mr-4.5 pr-4;
+}
+
+.emptyWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transform: translateY(-2rem);
+  color: #b0b0b0;
+}

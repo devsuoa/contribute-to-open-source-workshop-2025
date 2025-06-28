@@ -7,7 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import styles from "./CompetitionCard.module.css";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface CompetitionCardProps {
   name: string;
@@ -22,6 +24,7 @@ const CompetitionCard = ({
   endTime,
   id,
 }: CompetitionCardProps) => {
+  const { firebaseUser } = useAuth();
   const navigate = useNavigate();
   const now = new Date();
 
@@ -30,6 +33,21 @@ const CompetitionCard = ({
   const formattedEnd = format(endTime, "h:mm a");
 
   const isPast = endTime < now;
+
+  const handleEnterClick = async () => {
+    try {
+      if (firebaseUser?.email) {
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${id}/progress`,
+          { user: firebaseUser.email },
+        );
+      }
+    } catch (err) {
+      console.error("Failed to upsert competition progress:", err);
+    } finally {
+      navigate(`/competition/${id}`);
+    }
+  };
 
   return (
     <Card className={styles.card}>
@@ -60,10 +78,7 @@ const CompetitionCard = ({
         </div>
 
         {/* CTA */}
-        <button
-          onClick={() => navigate(`/competition/${id}`)}
-          className={styles.button}
-        >
+        <button onClick={handleEnterClick} className={styles.button}>
           {isPast ? "View Contest" : "Enter Contest"}
           <FontAwesomeIcon icon={faArrowRight} />
         </button>

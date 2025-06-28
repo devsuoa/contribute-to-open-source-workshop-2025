@@ -1,35 +1,28 @@
 import mongoose, { Schema } from "mongoose";
 
-const competitionSchema = new Schema({
-  name: String,
-  startTime: {
-    type: Date,
-    required: true,
-  },
-  endTime: {
-    type: Date,
-    required: true,
-  },
-  problems: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Problem",
+/**
+ * Schema for a competition document.
+ * Contains metadata about the competition, its problems, and leaderboard.
+ */
+const competitionSchema = new Schema(
+  {
+    name: String,
+    startTime: {
+      type: Date,
+      required: true,
     },
-  ],
-  leaderboard: [
-    {
-      user: {
+    endTime: {
+      type: Date,
+      required: true,
+    },
+    problems: [
+      {
         type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        ref: "Problem",
       },
-      points: {
-        type: Number,
-        required: true,
-        default: 0,
-      },
-    },
-  ],
-});
+    ],
+  },
+  { timestamps: true },
+);
 
 export default mongoose.model("Competition", competitionSchema);
