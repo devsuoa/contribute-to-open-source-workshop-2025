@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import CompetitionModel from "../../db/competition-schema.js";
 import TagOrderModel from "../../db/tag-order-schema.js";
 import CompetitionUserModel from "../../db/competition-user-schema.js";
@@ -180,5 +180,72 @@ router.get("/:competitionId", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.get(
+  "/:competitionId/leaderboard",
+  async (req: Request, res: Response) => {
+    const { competitionId } = req.params;
+    const limit = Math.min(Number(req.query.limit) || 50, 200);
+    const page = Math.max(Number(req.query.page) || 1, 1);
+
+    if (!Types.ObjectId.isValid(competitionId)) {
+      res.status(400).json({ error: "Invalid competition id" });
+      return;
+    }
+
+    try {
+      const [{ results, total }] = await CompetitionUserModel.aggregate([
+        { $match: { competition: new Types.ObjectId(competitionId) } },
+
+        {
+          // Join User with Nickname
+          $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "email",
+            pipeline: [{ $project: { _id: 0, nick: 1 } }],
+            as: "userInfo",
+          },
+        },
+        { $unwind: "$userInfo" },
+
+        { $project: { _id: 0, nick: "$userInfo.nick", points: 1 } },
+
+        { $sort: { points: -1, nick: 1 } },
+
+        {
+          // Paginate + total in a single query
+          $facet: {
+            results: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+            total: [{ $count: "count" }],
+          },
+        },
+        {
+          // Reshape total to a plain number
+          $addFields: { total: { $arrayElemAt: ["$total.count", 0] } },
+        },
+      ]);
+
+      /* Attach rank (global, 1-based) */
+      const ranked = results.map(
+        (r: { nick: string; points: number }, idx: number) => ({
+          rank: (page - 1) * limit + idx + 1,
+          nick: r.nick,
+          points: r.points,
+        }),
+      );
+
+      res.json({
+        total: total ?? ranked.length,
+        page,
+        limit,
+        results: ranked,
+      });
+    } catch (err) {
+      console.error("Failed to fetch leaderboard:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
 
 export default router;
