@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+.page {
+  @apply flex flex-col;
+}
+
+.titleRow {
+  @apply flex items-center gap-4 mb-4;
+}
+
+.backButton {
+  @apply w-10 h-10 flex items-center justify-center rounded-full
+    bg-[#171717] hover:bg-[#1F1F1F] transition
+    border border-[#2F2F2F] cursor-pointer;
+}
+
+.heading {
+  @apply text-3xl font-bold text-white;
+}

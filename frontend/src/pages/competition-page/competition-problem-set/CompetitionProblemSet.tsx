@@ -4,6 +4,7 @@ import { faHouse, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProblemCard from "@/components/competition-components/problem-card/ProblemCard";
+import TopicCard from "@/components/competition-components/topic-card/TopicCard";
 import styles from "./CompetitionProblemSet.module.css";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -71,6 +72,7 @@ const CompetitionProblemSet = () => {
           <h2 className={styles.sectionHeading}>{tag}</h2>
 
           <div className={styles.cardsGrid}>
+            <TopicCard key={`${tag}`} name={`${tag}`} topic={tag} />
             {problems.map((p) => (
               <ProblemCard
                 key={p._id}

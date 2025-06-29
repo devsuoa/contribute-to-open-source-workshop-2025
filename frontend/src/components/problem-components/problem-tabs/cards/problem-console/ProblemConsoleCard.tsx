@@ -26,8 +26,8 @@ export default function ProblemConsoleCard() {
     setRunArgs((p) => Object.assign([...p], { [idx]: v }));
 
   const textareaClass =
-    "w-full font-mono text-sm bg-[#1F1F1F] border border-[#2F2F2F] rounded-md " +
-    "px-3 py-2 focus-visible:ring-0 resize-none min-h-[40px] hide-scrollbar overflow-hidden";
+    "w-full font-mono !text-sm !font-medium bg-[#1F1F1F] border border-[#2F2F2F] rounded-md " +
+    "px-3 py-3 focus-visible:ring-0 resize-none min-h-[40px] hide-scrollbar overflow-hidden";
 
   return (
     <div className={styles.card}>

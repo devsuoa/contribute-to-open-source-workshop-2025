@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.card {
+  @apply bg-white border-[#D7D7D7] shadow hover:shadow-lg transition w-full;
+}
+
+.cardContent {
+  @apply flex flex-col items-center justify-center gap-4 h-full text-center;
+}
+
+.title {
+  @apply text-lg font-bold truncate text-black mb-2;
+}
+
+.button {
+  @apply w-full font-semibold flex items-center justify-center gap-2 cursor-pointer bg-black text-white;
+}
