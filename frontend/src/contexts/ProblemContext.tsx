@@ -31,6 +31,17 @@ export const ProblemProvider = ({
   const [preferredLanguage, setPreferredLanguage] = useState<Language>("cpp");
   const [code, setCode] = useState("");
 
+  const stringify = (x: string | number | (string | number)[]) =>
+    Array.isArray(x) ? JSON.stringify(x) : String(x);
+  const initialArgs =
+    testCases.length > 0 ? testCases[0].inputs.map(stringify) : [];
+
+  const [runArgs, setRunArgs] = useState<string[]>(initialArgs);
+  const [consoleOutput, setConsoleOutput] = useState("");
+  const [consoleStdout, setConsoleStdout] = useState("");
+  const [consoleStderr, setConsoleStderr] = useState("");
+  const [consoleLoading, setConsoleLoading] = useState(false);
+
   useEffect(() => {
     console.log("❓ Problem: ", problemName);
     console.log("📜 Description:", problemDescription);
@@ -76,6 +87,16 @@ export const ProblemProvider = ({
         setPreferredLanguage,
         code,
         setCode,
+        runArgs,
+        setRunArgs,
+        consoleOutput,
+        setConsoleOutput,
+        consoleStdout,
+        setConsoleStdout,
+        consoleStderr,
+        setConsoleStderr,
+        consoleLoading,
+        setConsoleLoading,
       }}
     >
       {children}

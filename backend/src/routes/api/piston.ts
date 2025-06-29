@@ -67,7 +67,7 @@ int main() {
       body: JSON.stringify({
         language: "g++",
         version: "10.2.0",
-        files: [{ name: "main.cpp", content: source }],
+        files: [{ name: "main", content: source }],
         run_timeout: 2000,
         compile_timeout: 5000,
         run_memory_limit: 128_000_000,
@@ -135,6 +135,102 @@ int main() {
       expected,
       output: null,
       status: "RUNTIME ERROR",
+    });
+  }
+});
+
+/*
+ * POST /api/piston/run-cpp
+ * Runs a C++ function using the Piston API.
+ * Expects a JSON body with the function lines, function name, inputs, and a toString helper.
+ */
+router.post("/run-cpp", async (req: Request, res: Response) => {
+  const {
+    functionLines,
+    functionName,
+    inputs,
+    toStringSnippet,
+  }: {
+    functionLines: string[];
+    functionName: string;
+    inputs: string[];
+    toStringSnippet: string;
+  } = req.body;
+
+  const source = `#include <bits/stdc++.h>
+using namespace std;
+${functionLines.join("\n")}
+
+// caller-supplied toString helper
+${toStringSnippet}
+
+int main() {
+  auto result = ${functionName}(${inputs.join(", ")});
+  cout << "\\n__RESULT__:" << toString(result) << "\\n";
+  return 0;
+}
+`;
+
+  try {
+    const pistonUrl = process.env.PISTON_URL;
+    if (!pistonUrl) throw new Error("PISTON_URL env var not set");
+
+    const resp = await fetch(pistonUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        language: "g++",
+        version: "10.2.0",
+        files: [{ name: "main", content: source }],
+        run_timeout: 2000,
+        compile_timeout: 5000,
+        run_memory_limit: 128_000_000,
+        compile_memory_limit: 512_000_000,
+      }),
+    });
+
+    const data = await resp.json();
+
+    // Pull out sentinel line
+    const rawOut = (data.run?.stdout ?? "").replace(/\r\n/g, "\n");
+
+    const match = rawOut.match(/^__RESULT__:(.*)$/m);
+    const output = match ? match[1].trim() : "";
+
+    const stdout = rawOut
+      .split("\n")
+      .filter((ln: string) => !ln.startsWith("__RESULT__:"))
+      .join("\n")
+      .trim();
+
+    let status: "OK" | "COMPILE ERROR" | "TLE" | "RUNTIME ERROR" = "OK";
+
+    if (data.compile?.code !== 0) {
+      status = "COMPILE ERROR";
+    } else if (data.run?.status === "TO") {
+      status = "TLE";
+    } else if (
+      (typeof data.run?.code === "number" && data.run.code !== 0) ||
+      data.run?.signal
+    ) {
+      status = "RUNTIME ERROR";
+    }
+
+    res.json({
+      success: true,
+      status,
+      output, // Function’s return value
+      stdout, // User’s extra prints
+      stderr: data.compile?.stderr || data.run?.stderr || "",
+    });
+  } catch (err) {
+    console.error("🔥 run-cpp fatal error:", err);
+    res.status(500).json({
+      success: false,
+      status: "SERVER ERROR",
+      output: "",
+      stdout: "",
+      stderr: "",
     });
   }
 });

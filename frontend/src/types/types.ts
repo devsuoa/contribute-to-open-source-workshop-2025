@@ -91,6 +91,19 @@ export interface ProblemContextType {
 
   code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
+
+  runArgs: string[];
+  setRunArgs: React.Dispatch<React.SetStateAction<string[]>>;
+
+  consoleOutput: string;
+  setConsoleOutput: React.Dispatch<React.SetStateAction<string>>;
+  consoleStdout: string;
+  setConsoleStdout: React.Dispatch<React.SetStateAction<string>>;
+  consoleStderr: string;
+  setConsoleStderr: React.Dispatch<React.SetStateAction<string>>;
+
+  consoleLoading: boolean;
+  setConsoleLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface User {

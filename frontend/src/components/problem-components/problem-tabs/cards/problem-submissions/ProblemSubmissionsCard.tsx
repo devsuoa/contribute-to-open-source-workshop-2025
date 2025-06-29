@@ -8,7 +8,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Clock, Code, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faClock,
+  faCode,
+  faCheckCircle,
+  faTimesCircle,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProblemSubmissionsCard.module.css";
 
 interface Submission {
@@ -21,11 +28,14 @@ interface Submission {
 
 const verdictIcon = (v: string) =>
   v.toLowerCase() === "accepted" ? (
-    <CheckCircle className="h-4 w-4 text-[#00D492]" />
+    <FontAwesomeIcon icon={faCheckCircle} className="h-4 w-4 text-[#00D492]" />
   ) : v.toLowerCase() === "wrong answer" ? (
-    <XCircle className="h-4 w-4 text-[#F87171]" />
+    <FontAwesomeIcon icon={faTimesCircle} className="h-4 w-4 text-[#F87171]" />
   ) : (
-    <AlertCircle className="h-4 w-4 text-gray-500" />
+    <FontAwesomeIcon
+      icon={faExclamationCircle}
+      className="h-4 w-4 text-gray-500"
+    />
   );
 
 const verdictColor = (v: string) =>
@@ -87,7 +97,10 @@ export default function ProblemSubmissionsCard() {
                           </span>
                           <div className="w-1 h-1 bg-white/60 rounded-full" />
                           <div className="flex items-center gap-1 text-sm text-white">
-                            <Clock className="h-3 w-3" />
+                            <FontAwesomeIcon
+                              icon={faClock}
+                              className="h-3 w-3"
+                            />
                             {s.submittedAt
                               ? new Date(s.submittedAt).toLocaleString(
                                   "en-NZ",
@@ -105,7 +118,7 @@ export default function ProblemSubmissionsCard() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
-                          <Code className="h-3 w-3" />
+                          <FontAwesomeIcon icon={faCode} className="h-3 w-3" />
                           {s.language.toUpperCase()}
                         </div>
                       </div>
@@ -121,12 +134,15 @@ export default function ProblemSubmissionsCard() {
                   <AccordionContent className="px-4 pb-4 pt-0 bg-[#1F1F1F]">
                     <div className="border-t border-border/30 pt-3">
                       <div className="flex items-center gap-2 mb-2">
-                        <Code className="h-4 w-4 text-muted-foreground" />
+                        <FontAwesomeIcon
+                          icon={faCode}
+                          className="h-4 w-4 text-muted-foreground"
+                        />
                         <span className="text-xs font-medium text-muted-foreground">
                           Source Code
                         </span>
                       </div>
-                      <pre className="text-xs bg-background border rounded-md p-3 overflow-x-auto whitespace-pre-wrap break-words font-mono">
+                      <pre className="text-xs bg-background border border-[#2F2F2F] rounded-md p-3 overflow-x-auto whitespace-pre-wrap break-words font-mono">
                         {s.sourceCode}
                       </pre>
                     </div>

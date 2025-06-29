@@ -39,6 +39,11 @@ const CodeEditorControls = () => {
     code,
     setCode,
     functionSignatures,
+    runArgs,
+    setConsoleOutput,
+    setConsoleStdout,
+    setConsoleStderr,
+    setConsoleLoading,
   } = useProblem();
 
   const showSuccessToast = () => {
@@ -191,6 +196,50 @@ const CodeEditorControls = () => {
     setCode(snippet);
   };
 
+  const handleRun = async () => {
+    setActiveTab("console");
+
+    setConsoleLoading(true);
+
+    console.log("▶️  Running with args:", runArgs);
+
+    const sig = functionSignatures[preferredLanguage];
+    if (!sig) return;
+
+    const functionLines = code
+      .trim()
+      .split(/\r?\n/)
+      .map((ln) => ln.replace(/\r$/, ""));
+
+    const payload = {
+      functionLines,
+      functionName: sig.functionName,
+      inputs: runArgs,
+      toStringSnippet: sig.toString,
+    };
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/piston/run-${preferredLanguage}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
+      const result = await res.json();
+      console.log("🔙 run result:", result);
+      setConsoleOutput(result.output ?? "");
+      setConsoleStdout(result.stdout ?? "");
+      setConsoleStderr(result.stderr ?? "");
+
+      setConsoleLoading(false);
+    } catch (err) {
+      console.error("❌ run error:", err);
+      setConsoleLoading(false);
+    }
+  };
+
   return (
     <>
       <div className={styles.buttonRow}>
@@ -237,7 +286,7 @@ const CodeEditorControls = () => {
           <Button
             variant="outline"
             className={styles.iconButton}
-            onClick={handleSubmit}
+            onClick={handleRun}
           >
             <FontAwesomeIcon icon={faPlay} className={styles.iconInfo} />
             Run
