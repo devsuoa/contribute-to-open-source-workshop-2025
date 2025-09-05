@@ -15,7 +15,7 @@ const CompetitionDocumentation = () => {
     {
       name: "C++",
       description:
-        "A powerful, high-performance programming language widely used in competitive programming. Known for its speed and extensive Standard Template Library (STL).",
+        "A fast, compiled language with STL support. We are using version X.",
       docUrl: "https://cppreference.com/",
       image: cppIcon,
       color: "bg-[#808CF8]",
@@ -23,7 +23,7 @@ const CompetitionDocumentation = () => {
     {
       name: "Java",
       description:
-        "A versatile, object-oriented programming language with strong memory management and extensive libraries. Popular for its 'write once, run anywhere' philosophy.",
+        "A cross-platform, object-oriented programming language. We are using version X.",
       docUrl: "https://docs.oracle.com/en/java/",
       image: javaIcon,
       color: "bg-[#F87171]",
@@ -31,7 +31,7 @@ const CompetitionDocumentation = () => {
     {
       name: "Python",
       description:
-        "A high-level, interpreted programming language known for its simplicity and readability. Great for rapid prototyping and has extensive libraries.",
+        "An easy to read scripting language great for quick development. We are using version X.",
       docUrl: "https://docs.python.org/3/",
       image: pythonIcon,
       color: "bg-[#FDC700]",
