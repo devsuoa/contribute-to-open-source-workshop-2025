@@ -25,7 +25,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface ProblemProgress {
   problem: string;
@@ -41,7 +40,6 @@ export default function ProblemDescriptionCard() {
     competitionId: string;
     problemId: string;
   }>();
-  const { firebaseUser } = useAuth();
   const {
     problemName,
     problemDescription,
@@ -66,7 +64,7 @@ export default function ProblemDescriptionCard() {
   // Fetch initial hints used count
   useEffect(() => {
     const fetchHintsUsed = async () => {
-      if (!competitionId || !firebaseUser?.email) {
+      if (!competitionId) {
         setLoading(false);
         return;
       }
@@ -81,14 +79,14 @@ export default function ProblemDescriptionCard() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              user: firebaseUser.email,
+              user: "<USER_EMAIL>",
             }),
           },
         );
 
         // Then fetch the current progress
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/${firebaseUser.email}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/<USER_EMAIL>`,
         );
 
         if (response.ok) {
@@ -112,7 +110,7 @@ export default function ProblemDescriptionCard() {
     };
 
     fetchHintsUsed();
-  }, [competitionId, problemId, firebaseUser?.email]);
+  }, [competitionId, problemId]);
 
   const handleHintClick = (hintIndex: number, event: React.MouseEvent) => {
     // Check if hint is already unlocked
@@ -140,15 +138,14 @@ export default function ProblemDescriptionCard() {
     if (
       pendingUnlockIndex === null ||
       !competitionId ||
-      !problemId ||
-      !firebaseUser?.email
+      !problemId
     ) {
       return;
     }
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/${firebaseUser.email}/hints`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/<USER_EMAIL>/hints`,
         {
           method: "PATCH",
           headers: {

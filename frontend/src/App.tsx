@@ -1,12 +1,8 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import LoginPage from "@/pages/login-page/LoginPage";
-import RegistrationPage from "@/pages/registration-page/RegistrationPage";
 import HomePage from "@/pages/home-page/HomePage";
 import ProblemPage from "@/pages/problem-page/ProblemPage";
-
-import RequireAuth from "@/components/app-components/RequireAuth";
 
 import "./app.css";
 import CompetitionLayout from "./pages/competition-page/competition-layout/CompetitionLayout";
@@ -20,32 +16,19 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Routes>
         {/* Public Routes*/}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* Protected Routes*/}
         <Route
-          path="/registration"
-          element={
-            <RequireAuth>
-              <RegistrationPage />
-            </RequireAuth>
-          }
-        />
-        <Route
           path="/home"
           element={
-            <RequireAuth>
-              <HomePage />
-            </RequireAuth>
+            <HomePage />
           }
         />
         <Route
           path="/competition/:competitionId/*"
           element={
-            <RequireAuth>
-              <CompetitionLayout />
-            </RequireAuth>
+            <CompetitionLayout />
           }
         >
           <Route index element={<CompetitionProblemSet />} />

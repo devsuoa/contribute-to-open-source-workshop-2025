@@ -1,4 +1,4 @@
-/* init-db.ts ------------------------------------------------------------- */
+/* init-db.ts ------------------------------------------------------------- 
 import mongoose from "mongoose";
 import Problem from "./problem-schema.js";
 import Competition from "./competition-schema.js";
@@ -147,6 +147,6 @@ await TagOrder.updateOne(
 );
 console.log("✅ Tag order initialised");
 
-/* ---------- done ---------- */
 await mongoose.disconnect();
 console.log("🔌 Disconnected — seed complete");
+*/

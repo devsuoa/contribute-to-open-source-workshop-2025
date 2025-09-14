@@ -19,10 +19,8 @@ import { FunctionBuilder } from "@/utility/FunctionBuilder";
 import type { TestResult } from "@/types/types";
 import { toast } from "sonner";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 
 const CodeEditorControls = () => {
-  const { firebaseUser } = useAuth();
   const { competitionId, problemId } = useParams<{
     competitionId: string;
     problemId: string;
@@ -39,11 +37,6 @@ const CodeEditorControls = () => {
     code,
     setCode,
     functionSignatures,
-    runArgs,
-    setConsoleOutput,
-    setConsoleStdout,
-    setConsoleStderr,
-    setConsoleLoading,
   } = useProblem();
 
   const showSuccessToast = () => {
@@ -90,10 +83,10 @@ const CodeEditorControls = () => {
     }
 
     const markSolved = async () => {
-      if (!competitionId || !problemId || !firebaseUser?.email) return;
+      if (!competitionId || !problemId) return;
 
       await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/${firebaseUser.email}/solve`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/<USER_EMAIL>/solve`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -106,14 +99,14 @@ const CodeEditorControls = () => {
     };
 
     const createSubmission = async (verdict: string) => {
-      if (!competitionId || !problemId || !firebaseUser?.email) return;
+      if (!competitionId || !problemId) return;
       await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/submissions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           competition: competitionId,
           problem: problemId,
-          user: firebaseUser.email,
+          user: "<USER_EMAIL>",
           language: preferredLanguage,
           sourceCode: code,
           verdict,
@@ -140,26 +133,7 @@ const CodeEditorControls = () => {
       };
 
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/piston/execute-${preferredLanguage}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          },
-        );
-        const result = await res.json();
-
         console.log("🧪 Test Case:", payload.inputs);
-        console.log("✅ Result:", result);
-
-        newResults.push({
-          inputs: payload.inputs,
-          expected: payload.expected,
-          output: result.output,
-          status: result.status,
-          pass: result.pass,
-        });
       } catch (err) {
         console.error("❌ Error executing test case:", err);
         newResults.push({
@@ -196,49 +170,6 @@ const CodeEditorControls = () => {
     setCode(snippet);
   };
 
-  const handleRun = async () => {
-    setActiveTab("console");
-
-    setConsoleLoading(true);
-
-    console.log("▶️  Running with args:", runArgs);
-
-    const sig = functionSignatures[preferredLanguage];
-    if (!sig) return;
-
-    const functionLines = code
-      .trim()
-      .split(/\r?\n/)
-      .map((ln) => ln.replace(/\r$/, ""));
-
-    const payload = {
-      functionLines,
-      functionName: sig.functionName,
-      inputs: runArgs,
-      toStringSnippet: sig.toString,
-    };
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/piston/run-${preferredLanguage}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
-      const result = await res.json();
-      console.log("🔙 run result:", result);
-      setConsoleOutput(result.output ?? "");
-      setConsoleStdout(result.stdout ?? "");
-      setConsoleStderr(result.stderr ?? "");
-
-      setConsoleLoading(false);
-    } catch (err) {
-      console.error("❌ run error:", err);
-      setConsoleLoading(false);
-    }
-  };
 
   return (
     <>
@@ -286,7 +217,7 @@ const CodeEditorControls = () => {
           <Button
             variant="outline"
             className={styles.iconButton}
-            onClick={handleRun}
+            onClick={() => {}}
           >
             <FontAwesomeIcon icon={faPlay} className={styles.iconInfo} />
             Run

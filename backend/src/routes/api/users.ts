@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import UserModel from "../../db/user-schema.js";
 import type { User } from "../../types/types.js";
 
 const router = express.Router();
@@ -10,20 +9,9 @@ const router = express.Router();
  * Expects a query parameter `email`.
  */
 router.get("/", async (req: Request, res: Response) => {
-  const { email } = req.query;
+  // const { email } = req.query;
+  res.status(501).json({ error: "Not implemented" });
 
-  if (!email || typeof email !== "string") {
-    res.status(400).json({ error: "Missing or invalid email" });
-    return;
-  }
-
-  try {
-    const user = await UserModel.findOne({ email });
-    res.json({ exists: !!user });
-  } catch (error) {
-    console.error("Failed to fetch user:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
 });
 
 /*
@@ -34,33 +22,8 @@ router.get("/", async (req: Request, res: Response) => {
 router.post(
   "/",
   async (req: Request<unknown, unknown, User>, res: Response) => {
-    const { email, nick, yearLevel, preferredLanguage } = req.body;
-
-    if (!email || !nick || !yearLevel || !preferredLanguage) {
-      res.status(400).json({ error: "Missing required fields" });
-      return;
-    }
-
-    try {
-      const existingUser = await UserModel.findOne({ email });
-      if (existingUser) {
-        res.status(400).json({ error: "User already exists" });
-        return;
-      }
-
-      const newUser = new UserModel({
-        email,
-        nick,
-        yearLevel,
-        preferredLanguage,
-      });
-
-      await newUser.save();
-      res.status(201).json({ message: "User created successfully" });
-    } catch (error) {
-      console.error("Error creating user:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
+    // const { email, nick, yearLevel, preferredLanguage } = req.body;
+    res.status(501).json({ error: "Not implemented" });
   },
 );
 
@@ -70,54 +33,13 @@ router.post(
  * Expects a query parameter `email`.
  */
 router.get("/details", async (req: Request, res: Response) => {
-  const { email } = req.query;
-
-  if (!email || typeof email !== "string") {
-    res.status(400).json({ error: "Missing or invalid email" });
-    return;
-  }
-
-  try {
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-
-    res.json({
-      nick: user.nick,
-      yearLevel: user.yearLevel,
-      preferredLanguage: user.preferredLanguage,
-    });
-  } catch (err) {
-    console.error("Error fetching user:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  // const { email } = req.query;
+  res.status(501).json({ error: "Not implemented" });
 });
 
 router.get("/preferred-language", async (req: Request, res: Response) => {
-  const { email } = req.query;
-
-  if (!email || typeof email !== "string") {
-    res.status(400).json({ error: "Missing or invalid email" });
-    return;
-  }
-
-  try {
-    const user = await UserModel.findOne({ email })
-      .select("preferredLanguage -_id")
-      .lean();
-
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-
-    res.json({ preferredLanguage: user.preferredLanguage });
-  } catch (err) {
-    console.error("Error fetching preferred language:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  // const { email } = req.query;
+  res.status(501).json({ error: "Not implemented" });
 });
 
 export default router;

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./StatusBarProfile.module.css";
 import Logo from "@/assets/logo-white-text.svg";
-import { useAuth } from "@/contexts/AuthContext";
 import { signOut, getAuth } from "firebase/auth";
 
 import {
@@ -14,8 +13,7 @@ import {
 import placeholder from "@/assets/avatar-placeholder.png";
 
 const StatusBarProfile = () => {
-  const { firebaseUser } = useAuth();
-  const avatarSrc = firebaseUser?.photoURL || placeholder;
+  const avatarSrc = placeholder;
   const navigate = useNavigate();
 
   return (

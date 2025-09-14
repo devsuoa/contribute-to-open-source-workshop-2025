@@ -18,7 +18,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/contexts/AuthContext";
 import { signOut, getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -31,9 +30,8 @@ const pillClasses =
   "flex items-center gap-2 px-3 py-2 rounded-md border border-[#2F2F2F] text-sm font-medium";
 
 const StatusBarCompetition = () => {
-  const { firebaseUser } = useAuth();
   const { competitionId } = useParams();
-  const avatarSrc = firebaseUser?.photoURL || placeholder;
+  const avatarSrc = placeholder;
 
   const [points, setPoints] = useState<number | null>(null);
   const [countdown, setCountdown] = useState("--:--:--");
@@ -48,14 +46,14 @@ const StatusBarCompetition = () => {
   }, []);
 
   useEffect(() => {
-    if (!competitionId || !firebaseUser) return;
+    if (!competitionId) return;
 
     let intervalId: ReturnType<typeof setInterval> | undefined;
 
     const init = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=${firebaseUser.email}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=<USER_EMAIL>`,
         );
 
         setPoints(typeof data.points === "number" ? data.points : 0);
@@ -91,7 +89,7 @@ const StatusBarCompetition = () => {
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [competitionId, firebaseUser?.uid]);
+  }, [competitionId]);
 
   return (
     <div className={styles.statusBar}>

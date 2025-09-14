@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import axios from "axios";
 import {
   Accordion,
@@ -50,17 +49,16 @@ export default function ProblemSubmissionsCard() {
     competitionId: string;
     problemId: string;
   }>();
-  const { firebaseUser } = useAuth();
 
   const [subs, setSubs] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!competitionId || !firebaseUser?.email) return;
+    if (!competitionId) return;
     (async () => {
       try {
         const { data } = await axios.get<Submission[]>(
-          `${import.meta.env.VITE_API_BASE_URL}/api/submissions/${competitionId}/${problemId}/${firebaseUser.email}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/submissions/${competitionId}/${problemId}/<USER_EMAIL>`,
         );
         setSubs(data);
       } catch (err) {
@@ -69,7 +67,7 @@ export default function ProblemSubmissionsCard() {
         setLoading(false);
       }
     })();
-  }, [competitionId, firebaseUser?.email]);
+  }, [competitionId]);
 
   return (
     <div className={styles.card}>

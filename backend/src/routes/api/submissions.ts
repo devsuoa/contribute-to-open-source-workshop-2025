@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import SubmissionModel from "../../db/submission-schema.js";
 
 const router = express.Router();
 
@@ -9,24 +8,9 @@ const router = express.Router();
  * Expects a JSON body with competition, problem, user, language, and sourceCode
  */
 router.post("/", async (req: Request, res: Response) => {
-  try {
-    const { competition, problem, user, language, sourceCode, verdict } =
-      req.body;
-
-    const sub = await SubmissionModel.create({
-      competition,
-      problem,
-      user,
-      language,
-      sourceCode,
-      verdict: verdict ?? "PENDING",
-    });
-
-    res.status(201).json(sub);
-  } catch (err) {
-    console.error("Failed to create submission:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  // const { competition, problem, user, language, sourceCode, verdict } =
+  //   req.body;
+  res.status(501).json({ error: "Not implemented" });
 });
 
 /*
@@ -37,23 +21,8 @@ router.post("/", async (req: Request, res: Response) => {
 router.get(
   "/:competitionId/:problemId/:userEmail",
   async (req: Request, res: Response) => {
-    const { competitionId, problemId, userEmail } = req.params;
-
-    try {
-      const submissions = await SubmissionModel.find({
-        competition: competitionId,
-        problem: problemId,
-        user: userEmail,
-      })
-        .sort({ submittedAt: -1 })
-        .limit(5)
-        .lean();
-
-      res.json(submissions);
-    } catch (err) {
-      console.error("Failed to fetch submissions:", err);
-      res.status(500).json({ error: "Internal server error" });
-    }
+    // const { competitionId, problemId, userEmail } = req.params;
+    res.status(501).json({ error: "Not implemented" });
   },
 );
 
