@@ -1,152 +1,89 @@
-/* init-db.ts ------------------------------------------------------------- 
-import mongoose from "mongoose";
-import Problem from "./problem-schema.js";
-import Competition from "./competition-schema.js";
-import TagOrder from "./tag-order-schema.js";
-import "dotenv/config";
+import { db } from './db-utils.js';
 
-const { MONGODB_CONNECTION_STRING } = process.env;
-if (!MONGODB_CONNECTION_STRING)
-  throw new Error("❌ MONGODB_CONNECTION_STRING not set");
+const clearDb = () => {
+  db.serialize(() => {
+    db.run('DROP TABLE IF EXISTS users');
+    db.run('DROP TABLE IF EXISTS problems');
+    db.run('DROP TABLE IF EXISTS user_problem_status');
+    db.run('DROP TABLE IF EXISTS user_tokens')
+  });
+};
 
-await mongoose.connect(MONGODB_CONNECTION_STRING);
-console.log("✅ Connected to MongoDB");
+const initDb = () => {
+  db.serialize(() => {
+    db.run(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        password TEXT
+      )
+    `);
+    
+    db.run(`
+      CREATE TABLE IF NOT EXISTS problems (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        description TEXT,
+        solution TEXT
+      )
+    `);
 
-await Promise.all([Problem.deleteMany({}), Competition.deleteMany({})]);
-console.log("🧹 Cleared old Problem & Competition documents");
+    db.run(`
+      CREATE TABLE IF NOT EXISTS user_problem_status (
+        user_id INTEGER,
+        problem_id INTEGER,
+        last_attempt TIMESTAMP,
+        solved BOOLEAN,
+        PRIMARY KEY (user_id, problem_id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (problem_id) REFERENCES problems(id)
+      )
+    `);
 
-const problems = await Problem.insertMany([
-  {
-    name: "Remove Duplicates",
-    description:
-      "Return a new array with duplicates removed while keeping first occurrences.",
-    problemPoints: 60,
-    problemTag: "🛠️ Implementation",
-    hints: ["Use a set to remember seen values."],
-    functionSignatures: {
-      cpp: {
-        functionName: "removeDuplicates",
-        parameters: ["const vector<int>& arr"],
-        returnType: "vector<int>",
-        toString: `string toString(const vector<int>& v) {\n  string out = "[";\n  for (size_t i = 0; i < v.size(); ++i) {\n    out += to_string(v[i]);\n    if (i + 1 < v.size()) out += ", ";\n  }\n  out += "]";\n  return out;\n}`,
-      },
-      java: {
-        functionName: "removeDuplicates",
-        parameters: ["int[] arr"],
-        returnType: "int[]",
-        toString: `import java.util.Arrays;\npublic static String toString(int[] arr) {\n  return Arrays.toString(arr).replace(" ", "");\n}`,
-      },
-      python: {
-        functionName: "remove_duplicates",
-        parameters: ["arr: list[int]"],
-        returnType: "list[int]",
-        toString: `def to_string(arr: list[int]) -> str:\n    return str(arr)`,
-      },
-    },
-    sampleInput: {
-      input: "{1, 2, 2, 3}",
-      output: "[1, 2, 3]",
-      explanation: "The second 2 is skipped.",
-    },
-    constraints: ["1 ≤ n ≤ 100000", "−10⁹ ≤ arr[i] ≤ 10⁹"],
-    testCases: [
-      { inputs: ["{1, 2, 2, 3}"], expectedOutputs: ['"[1, 2, 3]"'] },
-      { inputs: ["{4, 4, 4, 4}"], expectedOutputs: ['"[4]"'] },
-      { inputs: ["{}"], expectedOutputs: ['"[]"'] },
-    ],
-  },
+    db.run(`
+      CREATE TABLE IF NOT EXISTS user_tokens (
+        token_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        token TEXT,
+        expires_at TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
 
-  {
-    name: "String Compression",
-    description: 'Compress repeating characters, e.g. "aabccc" → "a2bc3".',
-    problemPoints: 70,
-    problemTag: "🛠️ Implementation",
-    hints: ["Track run lengths; append counts only if >1."],
-    functionSignatures: {
-      cpp: {
-        functionName: "compressString",
-        parameters: ["const string& s"],
-        returnType: "string",
-        toString: `string toString(const string& s) { return s; }`,
-      },
-      java: {
-        functionName: "compressString",
-        parameters: ["String s"],
-        returnType: "String",
-        toString: `public static String toString(String s) { return s; }`,
-      },
-      python: {
-        functionName: "compress_string",
-        parameters: ["s: str"],
-        returnType: "str",
-        toString: `def to_string(s: str) -> str:\n    return s`,
-      },
-    },
-    sampleInput: {
-      input: '"aabccc"',
-      output: '"a2bc3"',
-      explanation: "Two a's → a2; three c's → c3.",
-    },
-    constraints: ["1 ≤ |s| ≤ 100000"],
-    testCases: [
-      { inputs: ['"aabccc"'], expectedOutputs: ['"a2bc3"'] },
-      { inputs: ['"abcd"'], expectedOutputs: ['"abcd"'] },
-      { inputs: ['"aaaaa"'], expectedOutputs: ['"a5"'] },
-    ],
-  },
-]);
-console.log(`🧠 Inserted ${problems.length} problems`);
 
-const pastYears = [2018, 2019, 2020, 2021, 2022];
-const past = pastYears.map((y) => ({
-  name: `Archived Contest ${y}`,
-  startTime: new Date(`${y}-01-01T10:00:00Z`),
-  endTime: new Date(`${y}-01-01T12:00:00Z`),
-  problems: problems.map((p) => p._id),
-}));
 
-const future = [2026, 2027, 2028].map((year) => ({
-  name: `Future Contest ${year}`,
-  startTime: new Date(`${year}-05-01T14:00:00Z`),
-  endTime: new Date(`${year}-05-01T16:00:00Z`),
-  problems: problems.map((p) => p._id),
-}));
+    console.log('Database initialized');
+  });
+};
 
-await Competition.insertMany([...past, ...future]);
-console.log(`🏁 Inserted competitions: ${past.length + future.length}`);
+const seedDb = () => {
+  const USERS = [
+    { username: 'alice', password: 'password123' },
+    { username: 'bob', password: 'securepass' }
+  ];
+  
+  const PROBLEMS = [
+    { title: 'Small Primes', description: 'How many prime numbers are there under 100?', solution: '25' },
+    { title: 'Fibonacci', description: `The Fibonacci numbers F(n) are defined as follows. F(0) = 0, F(1) = 1, F(n) = F(n-1) + F(n-2) for n > 1. Find F(10).`, solution: '55' }
+  ];
 
-await TagOrder.updateOne(
-  { scope: "global" },
-  {
-    $setOnInsert: {
-      order: [
-        "🛠️ Implementation",
-        "+ Math",
-        "🤑 Greedy",
-        "🔍 Binary Search",
-        "↔️ Two Pointers",
-        "🪟 Sliding Window",
-        "➕ Prefix Sum",
-        "📚 Stacks",
-        "📥 Queues",
-        "🌳 Trees",
-        "🗂️ Heaps",
-        "🔗 Linked Lists",
-        "🧭 DFS",
-        "🔄 BFS",
-        "🕸️ Graph Theory",
-        "🛣️ Single Source Shortest Path",
-        "🌲 Minimum Spanning Tree",
-        "🔙 Backtracking",
-        "📏 1D Dynamic Programming",
-        "🗺️ 2D Dynamic Programming",
-      ],
-    },
-  },
-  { upsert: true },
-);
-console.log("✅ Tag order initialised");
+  db.serialize(() => {
+    const insertUser = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
+    USERS.forEach(user => {
+      insertUser.run(user.username, user.password);
+    });
+    insertUser.finalize();
 
-await mongoose.disconnect();
-console.log("🔌 Disconnected — seed complete");
-*/
+    const insertProblem = db.prepare('INSERT INTO problems (title, description, solution) VALUES (?, ?, ?)');
+    PROBLEMS.forEach(problem => {
+      insertProblem.run(problem.title, problem.description, problem.solution);
+    });
+    insertProblem.finalize();
+
+    console.log('Database seeded');
+  });
+};
+
+clearDb();
+initDb();
+seedDb();
