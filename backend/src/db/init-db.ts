@@ -6,7 +6,8 @@ const clearDb = () => {
     db.run('DROP TABLE IF EXISTS problems');
     db.run('DROP TABLE IF EXISTS user_problem_status');
     db.run('DROP TABLE IF EXISTS user_tokens');
-    db.run('DROP TABLE IF EXISTS competitions')
+    db.run('DROP TABLE IF EXISTS competitions');
+    db.run('DROP TABLE IF EXISTS competition_problems');
   });
 };
 
@@ -56,9 +57,7 @@ const initDb = () => {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT,
           start_time TIMESTAMP NOT NULL,
-          end_time TIMESTAMP NOT NULL,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          end_time TIMESTAMP NOT NULL
         )
       `);
 

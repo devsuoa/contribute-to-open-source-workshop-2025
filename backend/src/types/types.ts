@@ -24,3 +24,10 @@ export interface UserToken {
   token: string;
   expires_at: Date; // ISO timestamp
 }
+
+export interface Competition {
+  id: number;
+  name: string;
+  startTime: Date; // ISO timestamp
+  endTime: Date;   // ISO timestamp
+}

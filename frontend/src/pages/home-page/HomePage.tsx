@@ -23,6 +23,7 @@ const HomePage = () => {
             `${import.meta.env.VITE_API_BASE_URL}/api/competitions/past`,
           ),
         ]);
+        console.log("Upcoming competitions:", upRes.data);
         setUpcoming(upRes.data);
         setPast(pastRes.data);
       } catch (err) {

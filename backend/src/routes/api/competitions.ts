@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { getPastCompetitions, getUpcomingCompetitions, getProblemsByCompetitionId } from "../../db/db-utils";
 
 const router = express.Router();
 
@@ -7,7 +8,13 @@ const router = express.Router();
  * → Returns all competitions that have ended.
  */
 router.get("/past", async (req: Request, res: Response) => {
-  res.status(501).json({ error: "Not implemented" });
+  try {
+    const result = await getPastCompetitions();
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error });
+  }
 });
 
 /*
@@ -15,7 +22,13 @@ router.get("/past", async (req: Request, res: Response) => {
  * → Returns all competitions that are upcoming or ongoing.
  */
 router.get("/upcoming", async (req: Request, res: Response) => {
-  res.status(501).json({ error: "Not implemented" });
+  try {
+    const result = await getUpcomingCompetitions();
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error });
+  }
 });
 
 /*
@@ -23,7 +36,14 @@ router.get("/upcoming", async (req: Request, res: Response) => {
  * → Returns problems grouped and ordered by tag.
  */
 router.get("/:competitionId/problems", async (req: Request, res: Response) => {
-  res.status(501).json({ error: "Not implemented" });
+  const { competitionId } = req.params;
+  try {
+    const result = getProblemsByCompetitionId(Number(competitionId));
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error });
+  }
 });
 
 /*

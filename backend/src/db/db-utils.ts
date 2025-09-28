@@ -1,6 +1,6 @@
 // Import sqlite3
 import sqlite3 from 'sqlite3';
-import { User, Problem, UserProblemStatus, UserToken } from '../types/types';
+import { User, Problem, Competition, UserProblemStatus, UserToken } from '../types/types';
 
 export const db = new sqlite3.Database('./database.sqlite');
 
@@ -38,6 +38,27 @@ export const getProblemById = (id: number): Promise<Problem | null> => {
     });
 }
 
+export const getProblemsByCompetitionId = (competitionId: number): Promise<Problem[]> => {
+    return new Promise<Problem[]>((resolve, reject) => {
+        db.all(`
+            SELECT p.* FROM problems p
+            JOIN competition_problems cp ON p.id = cp.problem_id
+            WHERE cp.competition_id = ?
+        `, [competitionId], (err, rows: any[]) => {
+            if (err) {
+                return reject(err);
+            }
+            const problems = rows.map(row => ({
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                solution: row.solution
+            }));
+            resolve(problems);
+        });
+    });
+}
+
 export const getAllProblems = (): Promise<Problem[]> => {
     return new Promise<Problem[]>((resolve, reject) => {
         db.all('SELECT * FROM problems', [], (err, rows: any[]) => {
@@ -51,6 +72,70 @@ export const getAllProblems = (): Promise<Problem[]> => {
                 solution: row.solution
             }));
             resolve(problems);
+        });
+    });
+}
+
+export const getCompetitionById = (id: number): Promise<Competition | null> => {
+    return new Promise<Competition | null>((resolve, reject) => {
+        db.get('SELECT * FROM competitions WHERE id = ?', [id], (err, row: any) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(row ? { id: row.id, name: row.name, startTime: new Date(row.start_time), endTime: new Date(row.end_time)} : null);
+        });
+    });
+}
+
+export const getAllCompetitions = (): Promise<Competition[]> => {
+    return new Promise<Competition[]>((resolve, reject) => {
+        db.all('SELECT * FROM competitions', [], (err, rows: any[]) => {
+            if (err) {
+                return reject(err);
+            }
+            const competitions = rows.map(row => ({
+                id: row.id,
+                name: row.name,
+                startTime: new Date(row.start_time),
+                endTime: new Date(row.end_time)
+            }));
+            resolve(competitions);
+        });
+    });
+}
+
+export const getPastCompetitions = (): Promise<Competition[]> => {
+    return new Promise<Competition[]>((resolve, reject) => {
+        const now = new Date().toISOString();
+        db.all('SELECT * FROM competitions WHERE end_time < ?', [now], (err, rows: any[]) => {
+            if (err) {
+                return reject(err);
+            }
+            const competitions = rows.map(row => ({
+                id: row.id,
+                name: row.name,
+                startTime: new Date(row.start_time),
+                endTime: new Date(row.end_time)
+            }));
+            resolve(competitions);
+        });
+    });
+}
+
+export const getUpcomingCompetitions = (): Promise<Competition[]> => {
+    return new Promise<Competition[]>((resolve, reject) => {
+        const now = new Date().toISOString();
+        db.all('SELECT * FROM competitions WHERE end_time >= ?', [now], (err, rows: any[]) => {
+            if (err) {
+                return reject(err);
+            }
+            const competitions = rows.map(row => ({
+                id: row.id,
+                name: row.name,
+                startTime: new Date(row.start_time),
+                endTime: new Date(row.end_time)
+            }));
+            resolve(competitions);
         });
     });
 }
@@ -81,7 +166,7 @@ export const createUserProblemStatus = (userId: number, problemId: number): Prom
     return new Promise<UserProblemStatus>((resolve, reject) => {
         db.run('INSERT INTO user_problem_status (user_id, problem_id, last_attempt, solved) VALUES (?, ?, ?, ?)',
             [userId, problemId, null, false],
-            function(err) {
+            function (err) {
                 if (err) {
                     return reject(err);
                 }
@@ -94,7 +179,7 @@ export const updateUserProblemStatus = (userProblemStatus: UserProblemStatus): P
     return new Promise<void>((resolve, reject) => {
         db.run('REPLACE INTO user_problem_status (user_id, problem_id, last_attempt, solved) VALUES (?, ?, ?, ?)',
             [userProblemStatus.user_id, userProblemStatus.problem_id, userProblemStatus.last_attempt && userProblemStatus.last_attempt.toISOString(), userProblemStatus.solved ? 1 : 0],
-            function(err) {
+            function (err) {
                 if (err) {
                     return reject(err);
                 }
@@ -107,7 +192,7 @@ export const createUserToken = (userId: number, token: string, expiresAt: Date):
     return new Promise<UserToken>((resolve, reject) => {
         db.run('INSERT INTO user_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
             [userId, token, expiresAt.toISOString()],
-            function(err) {
+            function (err) {
                 if (err) {
                     return reject(err);
                 }
@@ -118,7 +203,7 @@ export const createUserToken = (userId: number, token: string, expiresAt: Date):
 
 export const deleteUserToken = (userId: number): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
-        db.run('DELETE FROM user_tokens WHERE user_id = ?', [userId], function(err) {
+        db.run('DELETE FROM user_tokens WHERE user_id = ?', [userId], function (err) {
             if (err) {
                 return reject(err);
             }
