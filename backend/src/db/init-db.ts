@@ -5,9 +5,12 @@ const clearDb = () => {
     db.run('DROP TABLE IF EXISTS users');
     db.run('DROP TABLE IF EXISTS problems');
     db.run('DROP TABLE IF EXISTS user_problem_status');
+    db.run('DROP TABLE IF EXISTS competition_user_status');
     db.run('DROP TABLE IF EXISTS user_tokens');
     db.run('DROP TABLE IF EXISTS competitions');
     db.run('DROP TABLE IF EXISTS competition_problems');
+    db.run('DROP TABLE IF EXISTS submissions');
+    console.log('Database cleared');
   });
 };
 
@@ -43,6 +46,18 @@ const initDb = () => {
     `);
 
     db.run(`
+      CREATE TABLE IF NOT EXISTS competition_user_status (
+        competition_id INTEGER,
+        user_id INTEGER,
+        points INTEGER,
+        problems TEXT, -- JSON string of UserProblemStatus[]
+        PRIMARY KEY (competition_id, user_id),
+        FOREIGN KEY (competition_id) REFERENCES competitions(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
+
+    db.run(`
       CREATE TABLE IF NOT EXISTS user_tokens (
         token_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
@@ -71,6 +86,19 @@ const initDb = () => {
         )
       `);
 
+    db.run(`
+      CREATE TABLE IF NOT EXISTS submissions (
+        competition_id INTEGER,
+        problem_id INTEGER,
+        user_id INTEGER,
+        content TEXT,
+        submitted_at TIMESTAMP,
+        verdict TEXT CHECK( verdict IN ('Pending', 'Accepted', 'Rejected', 'Error') ) NOT NULL DEFAULT 'Pending',
+        FOREIGN KEY (competition_id) REFERENCES competitions(id),
+        FOREIGN KEY (problem_id) REFERENCES problems(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
 
     console.log('Database initialized');
   });

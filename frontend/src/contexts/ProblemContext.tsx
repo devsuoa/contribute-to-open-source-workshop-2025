@@ -3,9 +3,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import type {
   ProblemContextType,
-  TestResult,
-  Language,
   ProblemProps,
+  TestResult,
 } from "@/types/types";
 
 type ProblemProviderProps = ProblemProps & { children: ReactNode };
@@ -16,52 +15,23 @@ export const ProblemProvider = ({
   problemId,
   problemName,
   problemDescription,
-  problemFunctionHeader,
-  sampleInput,
-  constraints,
-  testCases,
-  problemPoints,
-  problemTag,
-  problemHints,
-  functionSignatures,
+  problemSolution,
 }: ProblemProviderProps) => {
   const [testResults, setTestResults] = useState<TestResult[]>([]);
-  const [activeTab, setActiveTab] = useState("problem");
-  const [isLoadingTestResults, setIsLoadingTestResults] = useState(false);
-  const [preferredLanguage, setPreferredLanguage] = useState<Language>("cpp");
   const [code, setCode] = useState("");
 
-  const stringify = (x: string | number | (string | number)[]) =>
-    Array.isArray(x) ? JSON.stringify(x) : String(x);
-  const initialArgs =
-    testCases.length > 0 ? testCases[0].inputs.map(stringify) : [];
+  const [activeTab, setActiveTab] = useState("problem");
 
-  const [runArgs, setRunArgs] = useState<string[]>(initialArgs);
+
   const [consoleOutput, setConsoleOutput] = useState("");
-  const [consoleStdout, setConsoleStdout] = useState("");
-  const [consoleStderr, setConsoleStderr] = useState("");
   const [consoleLoading, setConsoleLoading] = useState(false);
 
   useEffect(() => {
     console.log("❓ Problem: ", problemName);
     console.log("📜 Description:", problemDescription);
 
-    console.log("⌛ Test Cases:", testCases);
-    console.log("📝 Function Signatures:", functionSignatures);
-    console.log("💡 Hints:", problemHints);
-    console.log("🏷️ Problem Points:", problemPoints);
-    console.log("🏷️ Problem Tag:", problemTag);
-    console.log("🔧 Preferred Language:", preferredLanguage);
-  }, [
-    problemName,
-    problemDescription,
-    testCases,
-    functionSignatures,
-    problemHints,
-    problemPoints,
-    problemTag,
-    preferredLanguage,
-  ]);
+    console.log("⌛ Solution:", problemSolution);
+  }, [problemName, problemDescription, problemSolution]);
 
   return (
     <ProblemContext.Provider
@@ -69,32 +39,15 @@ export const ProblemProvider = ({
         problemId,
         problemName,
         problemDescription,
-        problemFunctionHeader,
-        sampleInput,
-        constraints,
-        testCases,
-        testResults,
-        setTestResults,
-        problemPoints,
-        problemTag,
-        problemHints,
-        functionSignatures,
+        problemSolution,
         activeTab,
         setActiveTab,
-        isLoadingTestResults,
-        setIsLoadingTestResults,
-        preferredLanguage,
-        setPreferredLanguage,
         code,
         setCode,
-        runArgs,
-        setRunArgs,
+        testResults,
+        setTestResults,
         consoleOutput,
         setConsoleOutput,
-        consoleStdout,
-        setConsoleStdout,
-        consoleStderr,
-        setConsoleStderr,
         consoleLoading,
         setConsoleLoading,
       }}

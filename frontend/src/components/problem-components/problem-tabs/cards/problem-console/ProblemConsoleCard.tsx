@@ -10,20 +10,12 @@ import { BarLoader } from "react-spinners";
 
 export default function ProblemConsoleCard() {
   const {
-    functionSignatures,
-    preferredLanguage,
-    runArgs,
-    setRunArgs,
     consoleOutput,
-    consoleStdout,
-    consoleStderr,
     consoleLoading,
   } = useProblem();
 
-  const sig = functionSignatures[preferredLanguage];
-
-  const handleChange = (idx: number, v: string) =>
-    setRunArgs((p) => Object.assign([...p], { [idx]: v }));
+  // const handleChange = (idx: number, v: string) =>
+  //   setRunArgs((p) => Object.assign([...p], { [idx]: v }));
 
   const textareaClass =
     "w-full font-mono !text-sm !font-medium bg-[#1F1F1F] border border-[#2F2F2F] rounded-md " +
@@ -46,22 +38,22 @@ export default function ProblemConsoleCard() {
       </div>
 
       <div className={styles.scrollArea}>
-        {sig && (
+        {(
           <>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-              {sig.parameters.map((p, i) => (
+              {/* {sig.parameters.map((p, i) => (
                 <div key={p} className="space-y-1">
                   <label className="block text-sm font-medium text-muted-foreground">
                     {p}
                   </label>
                   <AutoResizeTextarea
-                    value={runArgs[i] ?? ""}
+                    value={""}
                     onChange={(e) => handleChange(i, e.target.value)}
                     placeholder={`Enter ${p}`}
                     className={textareaClass}
                   />
                 </div>
-              ))}
+              ))} */}
             </form>
 
             <div className="mt-4 space-y-3">
@@ -69,18 +61,6 @@ export default function ProblemConsoleCard() {
                 title="Output"
                 value={consoleOutput}
                 accent="text-[#00D492]"
-                textareaClass={textareaClass}
-              />
-              <Field
-                title="Prints"
-                value={consoleStdout}
-                accent="text-[#03BCFF]"
-                textareaClass={textareaClass}
-              />
-              <Field
-                title="Errors"
-                value={consoleStderr}
-                accent="text-[#F87171]"
                 textareaClass={textareaClass}
               />
             </div>

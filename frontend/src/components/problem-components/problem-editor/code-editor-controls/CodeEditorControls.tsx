@@ -7,36 +7,23 @@ import {
   faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { useProblem } from "@/contexts/ProblemContext";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { Language } from "@/types/types";
-import { FunctionBuilder } from "@/utility/FunctionBuilder";
 import type { TestResult } from "@/types/types";
 import { toast } from "sonner";
 import { useParams } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 
 const CodeEditorControls = () => {
   const { competitionId, problemId } = useParams<{
     competitionId: string;
     problemId: string;
   }>();
-  const { problemPoints } = useProblem();
+  const { userId } = useUser();
 
   const {
-    testCases,
     setTestResults,
-    setActiveTab,
-    setIsLoadingTestResults,
-    preferredLanguage,
-    setPreferredLanguage,
     code,
     setCode,
-    functionSignatures,
+    setActiveTab,
   } = useProblem();
 
   const showSuccessToast = () => {
@@ -69,30 +56,19 @@ const CodeEditorControls = () => {
   };
 
   const handleSubmit = async () => {
-    setIsLoadingTestResults(true);
     console.log("🚀 Submitting code with test cases...");
-
-    // Make sure we have a signature for the selected language
-    const signature = functionSignatures[preferredLanguage];
-    if (!signature) {
-      console.error(
-        `❌ No function signature found for language: ${preferredLanguage}`,
-      );
-      setIsLoadingTestResults(false);
-      return;
-    }
 
     const markSolved = async () => {
       if (!competitionId || !problemId) return;
 
       await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/<USER_EMAIL>/solve`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}/progress/${userId}/solve`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             problem: problemId,
-            addPoints: problemPoints ?? 0,
+            addPoints: 10,
           }),
         },
       );
@@ -106,68 +82,57 @@ const CodeEditorControls = () => {
         body: JSON.stringify({
           competition: competitionId,
           problem: problemId,
-          user: "<USER_EMAIL>",
-          language: preferredLanguage,
-          sourceCode: code,
+          user: userId,
+          content: code,
           verdict,
         }),
       });
     };
 
-    // Split the current editor contents into lines for piston
-    const functionLines = code
-      .trim()
-      .split(/\r?\n/)
-      .map((ln) => ln.replace(/\r$/, ""));
+    const fetchProblemSolution = async () => {
+      if (!problemId) return null;
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/problems/${problemId}`,
+      );
+      const data = await response.json();
+      return data.solution;
+    };
 
     setActiveTab("tests");
     const newResults: TestResult[] = [];
 
-    for (const testCase of testCases) {
-      const payload = {
-        functionLines,
-        functionName: signature.functionName,
-        inputs: testCase.inputs,
-        expected: testCase.expected,
-        toStringSnippet: signature.toString,
-      };
-
-      try {
-        console.log("🧪 Test Case:", payload.inputs);
-      } catch (err) {
-        console.error("❌ Error executing test case:", err);
-        newResults.push({
-          inputs: testCase.inputs,
-          expected: testCase.expected,
-          output: null,
-          status: "ERROR",
-          pass: false,
-        });
-      }
+    const problemSolution = await fetchProblemSolution();
+    if (!problemSolution) {
+      toast.error("❌ Unable to fetch problem solution.");
+      return;
     }
+    const answer = code.trim();
+    newResults.push({
+        inputs: [answer],
+        expected: problemSolution,
+        pass: answer === problemSolution,
+      });
 
     setTestResults(newResults);
-    setIsLoadingTestResults(false);
 
     const passedTests = newResults.filter((result) => result.pass).length;
     const totalTests = newResults.length;
 
     if (passedTests === totalTests && totalTests > 0) {
       await markSolved();
-      await createSubmission("ACCEPTED");
+      await createSubmission("Accepted");
       window.dispatchEvent(
-        new CustomEvent("points:add", { detail: problemPoints ?? 0 }),
+        new CustomEvent("points:add", { detail: 10 }),
       );
       showSuccessToast();
     } else {
-      await createSubmission("WRONG ANSWER");
+      await createSubmission("Rejected");
       showFailureToast(passedTests, totalTests);
     }
   };
 
   const handleReset = () => {
-    const snippet = FunctionBuilder(preferredLanguage, functionSignatures);
-    setCode(snippet);
+    setCode("");
   };
 
 
@@ -175,34 +140,6 @@ const CodeEditorControls = () => {
     <>
       <div className={styles.buttonRow}>
         <div className={styles.leftButtons}>
-          <Select
-            value={preferredLanguage}
-            onValueChange={(value) => setPreferredLanguage(value as Language)}
-          >
-            <SelectTrigger className="w-[100px] cursor-pointer focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent style={{ borderColor: "#2F2F2F" }}>
-              <SelectItem
-                value="cpp"
-                className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-              >
-                C++
-              </SelectItem>
-              <SelectItem
-                value="java"
-                className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-              >
-                Java
-              </SelectItem>
-              <SelectItem
-                value="python"
-                className="cursor-pointer focus:bg-accent focus:text-accent-foreground"
-              >
-                Python
-              </SelectItem>
-            </SelectContent>
-          </Select>
 
           <Button
             variant="outline"
@@ -217,7 +154,7 @@ const CodeEditorControls = () => {
           <Button
             variant="outline"
             className={styles.iconButton}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <FontAwesomeIcon icon={faPlay} className={styles.iconInfo} />
             Run

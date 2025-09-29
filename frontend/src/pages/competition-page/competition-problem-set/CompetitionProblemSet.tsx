@@ -6,6 +6,7 @@ import axios from "axios";
 import ProblemCard from "@/components/competition-components/problem-card/ProblemCard";
 import TopicCard from "@/components/competition-components/topic-card/TopicCard";
 import styles from "./CompetitionProblemSet.module.css";
+import { useUser } from "@/contexts/UserContext";
 
 interface Problem {
   _id: string;
@@ -20,6 +21,7 @@ const CompetitionProblemSet = () => {
   const { competitionId } = useParams();
   const [data, setData] = useState<Record<string, Problem[]>>({});
   const [loading, setLoading] = useState(true);
+  const { userId } = useUser();
 
   useEffect(() => {
     if (!competitionId) return;
@@ -28,7 +30,7 @@ const CompetitionProblemSet = () => {
       try {
         const base = import.meta.env.VITE_API_BASE_URL;
         const url =
-          `${base}/api/competitions/${competitionId}/problems?user=<USER_EMAIL>`;
+          `${base}/api/competitions/${competitionId}/problems?user=${userId}`;
 
         const res = await axios.get<Record<string, Problem[]>>(url);
         setData(res.data);
@@ -38,7 +40,7 @@ const CompetitionProblemSet = () => {
         setLoading(false);
       }
     })();
-  }, [competitionId]);
+  }, [competitionId, userId]);
 
   return (
     <div className={styles.page}>

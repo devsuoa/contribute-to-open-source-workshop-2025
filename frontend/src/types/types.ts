@@ -6,8 +6,6 @@ export interface TestCase {
 export interface TestResult {
   inputs: (string | number | Array<string | number>)[];
   expected: string | number;
-  output: string | number | null;
-  status: string;
   pass: boolean;
 }
 
@@ -39,71 +37,38 @@ export interface ProblemProps {
   problemId: string;
   problemName: string;
   problemDescription: string;
-  problemFunctionHeader: string;
-
-  sampleInput: {
-    input: string;
-    output: string;
-    explanation: string;
-  };
-
-  constraints: string[];
-  testCases: TestCase[];
-
-  problemPoints: number;
-  problemTag: string;
-  problemHints: string[];
-
-  functionSignatures: FunctionSignatures;
+  problemSolution: string;
 }
 
 export interface ProblemContextType {
   problemId: string;
   problemName: string;
   problemDescription: string;
-  problemFunctionHeader: string;
-
-  sampleInput: {
-    input: string;
-    output: string;
-    explanation: string;
-  };
-
-  constraints: string[];
-  testCases: TestCase[];
-
-  testResults: TestResult[];
-  setTestResults: React.Dispatch<React.SetStateAction<TestResult[]>>;
-
-  isLoadingTestResults: boolean;
-  setIsLoadingTestResults: React.Dispatch<React.SetStateAction<boolean>>;
-
-  problemPoints: number;
-  problemTag: string;
-  problemHints: string[];
-  functionSignatures: FunctionSignatures;
+  problemSolution: string;
 
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 
-  preferredLanguage: Language;
-  setPreferredLanguage: React.Dispatch<React.SetStateAction<Language>>;
-
   code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
 
-  runArgs: string[];
-  setRunArgs: React.Dispatch<React.SetStateAction<string[]>>;
+  testResults: TestResult[];
+  setTestResults: React.Dispatch<React.SetStateAction<TestResult[]>>;
 
   consoleOutput: string;
   setConsoleOutput: React.Dispatch<React.SetStateAction<string>>;
-  consoleStdout: string;
-  setConsoleStdout: React.Dispatch<React.SetStateAction<string>>;
-  consoleStderr: string;
-  setConsoleStderr: React.Dispatch<React.SetStateAction<string>>;
-
+  
   consoleLoading: boolean;
   setConsoleLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface UserContextType {
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
+  userToken: string;
+  setUserToken: React.Dispatch<React.SetStateAction<string>>;
+  setTokenToLocalStorage: (token: string) => void;
+  isLoggedIn: boolean;
 }
 
 export interface User {
@@ -114,13 +79,9 @@ export interface User {
 }
 
 export interface Competition {
-  _id: string;
+  id: string;
   name: string;
   startTime: Date;
   endTime: Date;
   problems: string[];
-  leaderboard: {
-    user: string;
-    points: number;
-  }[];
 }

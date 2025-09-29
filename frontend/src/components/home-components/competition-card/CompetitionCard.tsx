@@ -8,6 +8,8 @@ import {
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import styles from "./CompetitionCard.module.css";
+import axios from "axios";
+import { useUser } from "@/contexts/UserContext";
 
 interface CompetitionCardProps {
   name: string;
@@ -24,6 +26,7 @@ const CompetitionCard = ({
 }: CompetitionCardProps) => {
   const navigate = useNavigate();
   const now = new Date();
+  const {userId} = useUser();
 
   const formattedDate = format(startTime, "dd MMM yyyy");
   const formattedStart = format(startTime, "h:mm a");
@@ -32,7 +35,18 @@ const CompetitionCard = ({
   const isPast = endTime < now;
 
   const handleEnterClick = async () => {
-    navigate(`/competition/${id}`);
+    try {
+      if (userId) {
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${id}/progress`,
+          { user: userId },
+        );
+      }
+    } catch (err) {
+      console.error("Failed to upsert competition progress:", err);
+    } finally {
+      navigate(`/competition/${id}`);
+    }
   };
 
   return (

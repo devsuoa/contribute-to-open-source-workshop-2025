@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getUserToken, createUserToken, deleteUserToken, getUserByUsername } from "../../db/db-utils";
+import { createUserToken, getUserByUsername } from "../../db/db-utils";
 
 const router = express.Router();
 
@@ -40,10 +40,10 @@ router.post('/login', async (req: Request, res: Response) => {
     // Set token in HttpOnly cookie
     res.cookie('token', token.token, { httpOnly: true, maxAge: cookieDurationMs }); // 1 hour
 
-    res.json({ message: 'Login successful' });
+    res.json({ message: 'Login successful', userId: user.id, token: token.token });
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error });
   }
 });
 

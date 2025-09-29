@@ -8,28 +8,14 @@ const Problem = ({
   problemId,
   problemName,
   problemDescription,
-  problemFunctionHeader,
-  sampleInput,
-  constraints,
-  testCases,
-  problemPoints,
-  problemTag,
-  problemHints,
-  functionSignatures,
+  problemSolution,
 }: ProblemProps) => {
   return (
     <ProblemProvider
       problemId={problemId}
       problemName={problemName}
       problemDescription={problemDescription}
-      problemFunctionHeader={problemFunctionHeader}
-      sampleInput={sampleInput}
-      constraints={constraints}
-      testCases={testCases}
-      problemPoints={problemPoints}
-      problemTag={problemTag}
-      problemHints={problemHints}
-      functionSignatures={functionSignatures}
+      problemSolution={problemSolution}
     >
       <div className={styles.wrapper}>
         <div className={styles.contentRow}>

@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { getProblemById } from "../../db/db-utils";
 
 const router = express.Router();
 
@@ -8,8 +9,19 @@ const router = express.Router();
  */
 router.get(
   "/:problemId",
-  async (req: Request, res: Response): Promise<void> => {
-    res.status(501).json({ error: "Not implemented" });
+  async (req: Request, res: Response) => {
+    const { problemId } = req.params;
+    try {
+      const result = await getProblemById(Number(problemId));
+      if (!result) {
+        res.status(404).json({ error: `Problem ${problemId} not found` });
+        return;
+      }
+      res.json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error });
+    }
   },
 );
 

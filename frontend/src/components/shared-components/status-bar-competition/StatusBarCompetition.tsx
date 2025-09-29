@@ -21,6 +21,7 @@ import {
 import { signOut, getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useUser } from "@/contexts/UserContext";
 
 const linkClasses =
   "flex items-center gap-2 px-3 py-1 rounded-md font-medium hover:bg-muted transition-colors";
@@ -31,6 +32,7 @@ const pillClasses =
 
 const StatusBarCompetition = () => {
   const { competitionId } = useParams();
+  const { userId } = useUser();
   const avatarSrc = placeholder;
 
   const [points, setPoints] = useState<number | null>(null);
@@ -53,7 +55,7 @@ const StatusBarCompetition = () => {
     const init = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=<USER_EMAIL>`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=${userId}`,
         );
 
         setPoints(typeof data.points === "number" ? data.points : 0);

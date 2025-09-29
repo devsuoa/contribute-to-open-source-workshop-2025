@@ -1,6 +1,6 @@
 // Import sqlite3
 import sqlite3 from 'sqlite3';
-import { User, Problem, Competition, UserProblemStatus, UserToken } from '../types/types';
+import { User, Problem, Competition, UserProblemStatus, UserToken, CompetitionUserStatus, Submission } from '../types/types';
 
 export const db = new sqlite3.Database('./database.sqlite');
 
@@ -82,7 +82,7 @@ export const getCompetitionById = (id: number): Promise<Competition | null> => {
             if (err) {
                 return reject(err);
             }
-            resolve(row ? { id: row.id, name: row.name, startTime: new Date(row.start_time), endTime: new Date(row.end_time)} : null);
+            resolve(row ? { id: row.id, name: row.name, startTime: new Date(row.start_time), endTime: new Date(row.end_time) } : null);
         });
     });
 }
@@ -188,6 +188,62 @@ export const updateUserProblemStatus = (userProblemStatus: UserProblemStatus): P
     });
 }
 
+export const getUserCompetitionStatus = (userId: number, competitionId: number): Promise<CompetitionUserStatus | null> => {
+    return new Promise<CompetitionUserStatus | null>((resolve, reject) => {
+        db.get('SELECT * FROM competition_user_status WHERE user_id = ? AND competition_id = ?', [userId, competitionId], (err, row: any) => {
+            if (err) {
+                return reject(err);
+            }
+            if (!row) {
+                return resolve(null);
+            }
+            db.all('SELECT * FROM user_problem_status WHERE user_id = ? AND problem_id IN (SELECT problem_id FROM competition_problems WHERE competition_id = ?)', [userId, competitionId], (err2, problemRows: any[]) => {
+                if (err2) {
+                    return reject(err2);
+                }
+                const problems = problemRows.map(pr => ({
+                    user_id: pr.user_id,
+                    problem_id: pr.problem_id,
+                    last_attempt: pr.last_attempt ? new Date(pr.last_attempt) : null,
+                    solved: !!pr.solved
+                }));
+                resolve({
+                    competition_id: row.competition_id,
+                    user_id: row.user_id,
+                    points: row.points,
+                    problems
+                });
+            });
+        });
+    });
+}
+
+export const createUserCompetitionStatus = (userId: number, competitionId: number): Promise<CompetitionUserStatus> => {
+    return new Promise<CompetitionUserStatus>((resolve, reject) => {
+        db.run('INSERT INTO competition_user_status (user_id, competition_id, points) VALUES (?, ?, ?)',
+            [userId, competitionId, 0],
+            function (err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve({ competition_id: competitionId, user_id: userId, points: 0, problems: [] });
+            });
+    });
+}
+
+export const updateUserCompetitionStatus = (competitionUserStatus: CompetitionUserStatus): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+        db.run('REPLACE INTO competition_user_status (user_id, competition_id, points) VALUES (?, ?, ?)',
+            [competitionUserStatus.user_id, competitionUserStatus.competition_id, competitionUserStatus.points],
+            function (err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+    });
+}
+
 export const createUserToken = (userId: number, token: string, expiresAt: Date): Promise<UserToken> => {
     return new Promise<UserToken>((resolve, reject) => {
         db.run('INSERT INTO user_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
@@ -212,3 +268,36 @@ export const deleteUserToken = (userId: number): Promise<void> => {
     });
 }
 
+export const createSubmission = (submission:Submission): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+        db.run('INSERT INTO submissions (competition_id, problem_id, user_id, content, submitted_at, verdict) VALUES (?, ?, ?, ?, ?, ?)',
+            [submission.competition_id, submission.problem_id, submission.user_id, submission.content, submission.submitted_at, submission.verdict],
+            function (err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+    });
+}
+
+export const getSubmissions = (competitionId: number, problemId: number, userId: number): Promise<Submission[]> => {
+    return new Promise<Submission[]>((resolve, reject) => {
+        db.all('SELECT * FROM submissions WHERE competition_id = ? AND problem_id = ? AND user_id = ? ORDER BY submitted_at DESC LIMIT 5',
+            [competitionId, problemId, userId],
+            (err, rows: any[]) => {
+                if (err) {
+                    return reject(err);
+                }
+                const submissions = rows.map(row => ({
+                    competition_id: row.competition_id,
+                    problem_id: row.problem_id,
+                    user_id: row.user_id,
+                    content: row.content,
+                    submitted_at: new Date(row.submitted_at),
+                    verdict: row.verdict
+                }));
+                resolve(submissions);
+            });
+    });
+}

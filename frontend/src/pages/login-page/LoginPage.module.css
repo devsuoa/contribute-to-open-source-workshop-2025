@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.page {
+  @apply flex flex-col gap-4 p-4;
+}
+
+.statusBar {
+  @apply mb-4;
+}
+
+.content {
+  @apply flex flex-col items-center gap-8 pt-[25vh];
+}
+
+.logo {
+  @apply w-32 h-32 md:w-40 md:h-40 object-contain;
+}

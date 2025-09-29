@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getPastCompetitions, getUpcomingCompetitions, getProblemsByCompetitionId } from "../../db/db-utils";
+import { getPastCompetitions, getUpcomingCompetitions, getProblemsByCompetitionId, getCompetitionById } from "../../db/db-utils";
 
 const router = express.Router();
 
@@ -51,10 +51,21 @@ router.get("/:competitionId/problems", async (req: Request, res: Response) => {
  * → Returns competition metadata (and optional user points).
  */
 router.get("/:competitionId", async (req: Request, res: Response) => {
-  // const { competitionId } = req.params;
-  res.status(501).json({ error: "Not implemented" });
+  const { competitionId } = req.params;
+  try {
+    const result = await getCompetitionById(Number(competitionId));
+    if (!result) {
+      res.status(404).json({ error: `Competition ${competitionId} not found` });
+      return;
+    }
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error });
+  }
 });
 
+// This can be a HARD activity
 router.get(
   "/:competitionId/leaderboard",
   async (req: Request, res: Response) => {

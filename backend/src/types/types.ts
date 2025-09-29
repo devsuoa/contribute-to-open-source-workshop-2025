@@ -31,3 +31,19 @@ export interface Competition {
   startTime: Date; // ISO timestamp
   endTime: Date;   // ISO timestamp
 }
+
+export interface CompetitionUserStatus {
+  competition_id: number;
+  user_id: number;
+  points: number;
+  problems: UserProblemStatus[];
+}
+
+export interface Submission {
+  competition_id: number;
+  problem_id: number;
+  user_id: number;
+  content: string;
+  submitted_at: Date; // ISO timestamp
+  verdict: 'Pending' | 'Accepted' | 'Rejected' | 'Error';
+}

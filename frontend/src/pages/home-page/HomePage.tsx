@@ -23,7 +23,6 @@ const HomePage = () => {
             `${import.meta.env.VITE_API_BASE_URL}/api/competitions/past`,
           ),
         ]);
-        console.log("Upcoming competitions:", upRes.data);
         setUpcoming(upRes.data);
         setPast(pastRes.data);
       } catch (err) {
@@ -59,8 +58,8 @@ const HomePage = () => {
         <div className={styles.cardsGrid}>
           {upcoming.map((c) => (
             <CompetitionCard
-              key={c._id}
-              id={c._id}
+              key={c.id}
+              id={c.id}
               name={c.name}
               startTime={new Date(c.startTime)}
               endTime={new Date(c.endTime)}
@@ -83,8 +82,8 @@ const HomePage = () => {
         <div className={styles.cardsGrid}>
           {past.map((c) => (
             <CompetitionCard
-              key={c._id}
-              id={c._id}
+              key={c.id}
+              id={c.id}
               name={c.name}
               startTime={new Date(c.startTime)}
               endTime={new Date(c.endTime)}

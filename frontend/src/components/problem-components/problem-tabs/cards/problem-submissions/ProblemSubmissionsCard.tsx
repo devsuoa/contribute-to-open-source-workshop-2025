@@ -16,6 +16,7 @@ import {
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProblemSubmissionsCard.module.css";
+import { useUser } from "@/contexts/UserContext";
 
 interface Submission {
   _id: string;
@@ -49,6 +50,7 @@ export default function ProblemSubmissionsCard() {
     competitionId: string;
     problemId: string;
   }>();
+  const { userId } = useUser();
 
   const [subs, setSubs] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,7 @@ export default function ProblemSubmissionsCard() {
     (async () => {
       try {
         const { data } = await axios.get<Submission[]>(
-          `${import.meta.env.VITE_API_BASE_URL}/api/submissions/${competitionId}/${problemId}/<USER_EMAIL>`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/submissions/${competitionId}/${problemId}/${userId}`,
         );
         setSubs(data);
       } catch (err) {
@@ -67,7 +69,7 @@ export default function ProblemSubmissionsCard() {
         setLoading(false);
       }
     })();
-  }, [competitionId]);
+  }, [competitionId, problemId, userId]);
 
   return (
     <div className={styles.card}>
@@ -101,16 +103,16 @@ export default function ProblemSubmissionsCard() {
                             />
                             {s.submittedAt
                               ? new Date(s.submittedAt).toLocaleString(
-                                  "en-NZ",
-                                  {
-                                    timeZone: "Pacific/Auckland",
-                                    day: "2-digit",
-                                    month: "short",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    hour12: false,
-                                  },
-                                )
+                                "en-NZ",
+                                {
+                                  timeZone: "Pacific/Auckland",
+                                  day: "2-digit",
+                                  month: "short",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: false,
+                                },
+                              )
                               : "—"}
                           </div>
                         </div>

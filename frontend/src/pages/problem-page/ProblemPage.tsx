@@ -6,41 +6,9 @@ import styles from "./ProblemPage.module.css";
 
 interface ProblemDoc {
   _id: string;
-  name: string;
+  title: string;
   description: string;
-  sampleInput: {
-    input: string;
-    output: string;
-    explanation: string;
-  };
-  constraints: string[];
-  testCases: {
-    inputs: string[];
-    expectedOutputs: string[];
-  }[];
-  problemPoints: number;
-  problemTag: string;
-  hints: string[];
-  functionSignatures: {
-    cpp: {
-      functionName: string;
-      parameters: string[];
-      returnType: string;
-      toString: string;
-    };
-    java: {
-      functionName: string;
-      parameters: string[];
-      returnType: string;
-      toString: string;
-    };
-    python: {
-      functionName: string;
-      parameters: string[];
-      returnType: string;
-      toString: string;
-    };
-  };
+  solution: string;
 }
 
 const ProblemPage = () => {
@@ -73,28 +41,14 @@ const ProblemPage = () => {
     return null;
   }
 
-  const { cpp } = problem.functionSignatures;
-  const cppHeader = `${cpp.returnType} ${cpp.functionName}(${cpp.parameters.join(
-    ", ",
-  )}) {`;
 
   return (
     <div className={styles.container}>
       <Problem
         problemId={problem._id}
-        problemName={problem.name}
+        problemName={problem.title}
         problemDescription={problem.description}
-        problemFunctionHeader={cppHeader}
-        sampleInput={problem.sampleInput}
-        constraints={problem.constraints}
-        testCases={problem.testCases.map(({ inputs, expectedOutputs }) => ({
-          inputs,
-          expected: expectedOutputs[0] ?? "",
-        }))}
-        problemPoints={problem.problemPoints}
-        problemTag={problem.problemTag}
-        problemHints={problem.hints}
-        functionSignatures={problem.functionSignatures}
+        problemSolution={problem.solution}
       />
     </div>
   );
