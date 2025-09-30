@@ -67,7 +67,7 @@ export interface UserContextType {
   setUserId: React.Dispatch<React.SetStateAction<string>>;
   userToken: string;
   setUserToken: React.Dispatch<React.SetStateAction<string>>;
-  setTokenToLocalStorage: (token: string) => void;
+  saveToLocalStorage: (userId: string, token: string) => void;
   isLoggedIn: boolean | null;
 }
 

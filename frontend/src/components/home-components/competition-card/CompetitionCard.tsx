@@ -39,7 +39,7 @@ const CompetitionCard = ({
       if (userId) {
         await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${id}/progress`,
-          { user: userId },
+          { userId: userId },
         );
       }
     } catch (err) {

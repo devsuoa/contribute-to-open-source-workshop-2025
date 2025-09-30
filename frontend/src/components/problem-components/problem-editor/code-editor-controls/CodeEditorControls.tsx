@@ -67,7 +67,7 @@ const CodeEditorControls = () => {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            problem: problemId,
+            problemId: problemId,
             addPoints: 10,
           }),
         },

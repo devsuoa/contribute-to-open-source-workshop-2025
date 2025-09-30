@@ -6,7 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 
 const LoginPage = () => {
-  const { setUserId, setUserToken, setTokenToLocalStorage } = useUser();
+  const { setUserId, setUserToken, saveToLocalStorage } = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +24,7 @@ const LoginPage = () => {
       );
       setUserId(res.data.userId);
       setUserToken(res.data.token);
-      setTokenToLocalStorage(res.data.token);
+      saveToLocalStorage(res.data.userId, res.data.token);
       window.location.href = "/"; // Redirect after login
     } catch (err: any) {
       setError(

@@ -11,24 +11,34 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({
     children,
 }: UserProviderProps) => {
-    const [userId, setUserId] = useState<string>("");
+    const [userId, setUserId] = useState<string>(() => localStorage.getItem("userId") || "");
     const [userToken, setUserToken] = useState<string>(() => localStorage.getItem("userToken") || "");
     const [isLoggedIn, setIsLoggedIn] = useState<boolean|null>(null);
 
     useEffect(() => {
-        setIsLoggedIn(isTokenValid(getTokenFromLocalStorage()));
+        setIsLoggedIn(isTokenValid(getFromLocalStorage()));
     }, [userToken]);
 
-    const setTokenToLocalStorage = (token: string) => {
+    const saveToLocalStorage = (userId: string, token: string) => {
+        localStorage.setItem("userId", userId);
         localStorage.setItem("userToken", token);
+        const time = new Date().getTime();
+        localStorage.setItem("tokenTimestamp", time.toString());
     }
 
-    const getTokenFromLocalStorage = () => {
-        return localStorage.getItem("userToken") || "";
+    const getFromLocalStorage = () => {
+        const userId = localStorage.getItem("userId") || "";
+        const token = localStorage.getItem("userToken") || "";
+        const timestamp = localStorage.getItem("tokenTimestamp") || "0";
+        return { userId, token, timestamp };
     }
 
-    const isTokenValid = (token: string) => {
-        return !!token; // Placeholder: consider any non-empty token as valid
+    const isTokenValid = ({ userId, token, timestamp }: { userId: string; token: string; timestamp: string }) => {
+        if (!userId || !token || !timestamp) return false;
+        const now = Date.now();
+        const tokenTime = Number(timestamp);
+        // 1 hour = 3600000 ms
+        return now - tokenTime < 3600000;
     }
 
     return (
@@ -38,7 +48,7 @@ export const UserProvider = ({
                 setUserId,
                 userToken,
                 setUserToken,
-                setTokenToLocalStorage,
+                saveToLocalStorage,
                 isLoggedIn,
             }}
         >

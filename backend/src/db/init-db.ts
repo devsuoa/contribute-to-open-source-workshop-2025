@@ -50,7 +50,6 @@ const initDb = () => {
         competition_id INTEGER,
         user_id INTEGER,
         points INTEGER,
-        problems TEXT, -- JSON string of UserProblemStatus[]
         PRIMARY KEY (competition_id, user_id),
         FOREIGN KEY (competition_id) REFERENCES competitions(id),
         FOREIGN KEY (user_id) REFERENCES users(id)

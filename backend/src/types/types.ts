@@ -37,7 +37,6 @@ export interface CompetitionUserStatus {
   competition_id: number;
   user_id: number;
   points: number;
-  problems: UserProblemStatus[];
 }
 
 export interface Submission {
