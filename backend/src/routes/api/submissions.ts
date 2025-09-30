@@ -13,9 +13,9 @@ router.post("/", async (req: Request, res: Response) => {
   const { competition, problem, user, content, verdict } = req.body;
   try {
     const newSubmission: Submission = {
-      competition_id: competition.id,
-      problem_id: problem.id,
-      user_id: user.id,
+      competition_id: competition,
+      problem_id: problem,
+      user_id: user,
       content,
       submitted_at: new Date(),
       verdict,

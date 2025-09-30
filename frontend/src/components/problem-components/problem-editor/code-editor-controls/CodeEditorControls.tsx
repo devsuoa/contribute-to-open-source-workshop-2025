@@ -67,6 +67,7 @@ const CodeEditorControls = () => {
 
     const createSubmission = async (verdict: string) => {
       if (!competitionId || !problemId) return;
+      console.log("Creating submission with:", competitionId, problemId, userId, code, verdict);
       await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/submissions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
