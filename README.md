@@ -150,12 +150,32 @@ Then commit these automatic changes and push again.
 
 ## Activities
 
-We are excited to announce the DEVS online contest platform 🎉🎉🎉! However, due to underpaid and overworked developers, there are some ~~unintended bugs~~ unique "features" 👀. We need your help to make it better!
+We are excited to announce the DEVS online contest platform 🎉🎉🎉! However, due to underpaid and overworked developers, there are some ~~unintended bugs~~ "unique features" 👀. We need your help to make it better!
 
 ### Easy
 
+#### E1: No Sekrit Dokuments
+
+Currently, when you make a submission the expected value will be shown in the submissions tab. We don't want that! Remove it on the frontend.
+
+#### E2: 
+
 ### Medium
 
+#### M1: Seeing Double
+
+In `backend/src/routes/api/submissions.ts`, the POST method to make a submission will create a new entry to the `competition_user_status` table every time a submission is made. We don't need to do that if the user already has a previous entry to this competition!
+
+#### M2: 
+
+- Path protection
+
 ### Hard
+
+#### H1:
+
+- User registration
+
+#### H2:
 
 - Competition Leaderboard
