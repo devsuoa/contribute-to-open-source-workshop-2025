@@ -4,7 +4,6 @@ import { faHouse, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProblemCard from "@/components/competition-components/problem-card/ProblemCard";
-import TopicCard from "@/components/competition-components/topic-card/TopicCard";
 import styles from "./CompetitionProblemSet.module.css";
 import { useUser } from "@/contexts/UserContext";
 

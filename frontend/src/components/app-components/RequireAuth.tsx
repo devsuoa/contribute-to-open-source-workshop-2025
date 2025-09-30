@@ -10,8 +10,11 @@ export default function RequireAuth({ children }: Props) {
   const { isLoggedIn } = useUser();
   const location = useLocation();
 
+  if (isLoggedIn === null) {
+    return null;
+  }
+
   if (!isLoggedIn) {
-    // Push them to /login and remember where they wanted to go
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

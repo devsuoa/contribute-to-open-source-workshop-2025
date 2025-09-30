@@ -13,7 +13,7 @@ export const UserProvider = ({
 }: UserProviderProps) => {
     const [userId, setUserId] = useState<string>("");
     const [userToken, setUserToken] = useState<string>(() => localStorage.getItem("userToken") || "");
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean|null>(null);
 
     useEffect(() => {
         setIsLoggedIn(isTokenValid(getTokenFromLocalStorage()));

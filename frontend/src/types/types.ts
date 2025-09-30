@@ -57,7 +57,7 @@ export interface ProblemContextType {
 
   consoleOutput: string;
   setConsoleOutput: React.Dispatch<React.SetStateAction<string>>;
-  
+
   consoleLoading: boolean;
   setConsoleLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -68,7 +68,7 @@ export interface UserContextType {
   userToken: string;
   setUserToken: React.Dispatch<React.SetStateAction<string>>;
   setTokenToLocalStorage: (token: string) => void;
-  isLoggedIn: boolean;
+  isLoggedIn: boolean | null;
 }
 
 export interface User {

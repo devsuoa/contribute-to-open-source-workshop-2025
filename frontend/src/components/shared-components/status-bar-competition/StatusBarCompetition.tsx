@@ -6,7 +6,6 @@ import placeholder from "@/assets/avatar-placeholder.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClipboardList,
-  faTrophy,
   faBook,
   faStar,
   faClock,
@@ -114,7 +113,7 @@ const StatusBarCompetition = () => {
             Problem&nbsp;Set
           </NavLink>
 
-          <NavLink
+          {/* <NavLink
             to={`/competition/${competitionId}/leaderboard`}
             className={({ isActive }) =>
               `${linkClasses} ${isActive ? activeClasses : ""}`
@@ -122,7 +121,7 @@ const StatusBarCompetition = () => {
           >
             <FontAwesomeIcon icon={faTrophy} className="text-yellow-400" />
             Leaderboard
-          </NavLink>
+          </NavLink> */}
 
           <NavLink
             to={`/competition/${competitionId}/docs`}
