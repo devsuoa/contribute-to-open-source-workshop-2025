@@ -172,10 +172,10 @@ In `backend/src/routes/api/submissions.ts`, the POST method to make a submission
 
 ### Hard
 
-#### H1:
+#### H1: New Guy Onboard
 
-- User registration
+Instead of using mock users, we want new users to be able to register themselves. Implement a registration page and the corresponding backend logic that adds the new user to the database.
 
-#### H2:
+#### H2: Be the Best
 
-- Competition Leaderboard
+The database keeps track of points scored by each user in each competition. Implement a leaderboard page that shows the ranking of users based on their total points in a competition. (Some of the UI components are already exising somewhere in the codebase, you just need to find them 😉)
