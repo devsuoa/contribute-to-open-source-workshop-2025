@@ -120,6 +120,34 @@ Push you changes so everyone else can see them:
 git push origin your-branch-name
 ```
 
+After sucessfully pushing, you should be able to see a notification on GitHub to create a pull request.
+
+![pr](/images/pr.png)
+
+### 4. Create a Pull Request
+
+Click on "Compare & pull request", add a description of your changes, and submit the pull request.
+
+The description usually includes:
+
+- A description on the purpose and effect of the change
+- How to test if the change works as intended
+
+### 5. Checks and Review
+
+Now your pull request is ready for review. However, it needs to pass the formatting and linting checks first.
+
+![review](/images/review.png)
+
+If it fails like the image above, go into your `frontend` and `backend` directories and run:
+
+```bash
+npm run format
+npm run lint
+```
+
+Then commit these automatic changes and push again.
+
 ## Activities
 
 We are excited to announce the DEVS online contest platform 🎉🎉🎉! However, due to underpaid and overworked developers, there are some ~~unintended bugs~~ unique "features" 👀. We need your help to make it better!
