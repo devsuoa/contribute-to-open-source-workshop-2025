@@ -2,7 +2,6 @@ import styles from "./CodeEditorControls.module.css";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPlay,
   faRotateLeft,
   faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
@@ -151,14 +150,6 @@ const CodeEditorControls = () => {
           </Button>
         </div>
         <div className={styles.rightButtons}>
-          <Button
-            variant="outline"
-            className={styles.iconButton}
-            onClick={() => { }}
-          >
-            <FontAwesomeIcon icon={faPlay} className={styles.iconInfo} />
-            Run
-          </Button>
           <Button
             variant="outline"
             className={styles.iconButton}

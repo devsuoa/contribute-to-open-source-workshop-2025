@@ -4,10 +4,10 @@ import styles from "./ProblemTestsCard.module.css";
 import { SyncLoader } from "react-spinners";
 
 export default function ProblemTestsCard() {
-  const { testResults, isLoadingTestResults } = useProblem();
+  const { testResults } = useProblem();
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const wasLoadingRef = useRef(false);
-
+  const isLoadingTestResults = false; // Placeholder for actual loading state
   useEffect(() => {
     if (
       wasLoadingRef.current &&
@@ -36,7 +36,7 @@ export default function ProblemTestsCard() {
           </div>
         ) : (
           testResults.map((result, idx) => {
-            const { inputs, output, expected, status, pass } = result;
+            const { inputs, expected, pass } = result;
             return (
               <div
                 key={idx}
@@ -58,13 +58,9 @@ export default function ProblemTestsCard() {
                 <p>
                   <strong>Expected:</strong> {String(expected)}
                 </p>
-                <p>
-                  <strong>Output:</strong>{" "}
-                  {output === null ? "null" : String(output)}
-                </p>
-                {!pass && status && (
+                {!pass && (
                   <p className={styles.error}>
-                    <strong>Error:</strong> {status}
+                    <strong>Error!</strong>
                   </p>
                 )}
               </div>

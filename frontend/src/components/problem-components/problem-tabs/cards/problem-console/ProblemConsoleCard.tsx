@@ -71,40 +71,40 @@ export default function ProblemConsoleCard() {
   );
 }
 
-function AutoResizeTextarea({
-  value,
-  onChange,
-  placeholder,
-  className,
-}: {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder: string;
-  className: string;
-}) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+// function AutoResizeTextarea({
+//   value,
+//   onChange,
+//   placeholder,
+//   className,
+// }: {
+//   value: string;
+//   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+//   placeholder: string;
+//   className: string;
+// }) {
+//   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      // Reset height to auto to get the correct scrollHeight
-      textarea.style.height = "auto";
-      // Set height to scrollHeight to fit content
-      textarea.style.height = `${Math.max(40, textarea.scrollHeight)}px`;
-    }
-  }, [value]);
+//   useEffect(() => {
+//     const textarea = textareaRef.current;
+//     if (textarea) {
+//       // Reset height to auto to get the correct scrollHeight
+//       textarea.style.height = "auto";
+//       // Set height to scrollHeight to fit content
+//       textarea.style.height = `${Math.max(40, textarea.scrollHeight)}px`;
+//     }
+//   }, [value]);
 
-  return (
-    <Textarea
-      ref={textareaRef}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={className}
-      rows={1}
-    />
-  );
-}
+//   return (
+//     <Textarea
+//       ref={textareaRef}
+//       value={value}
+//       onChange={onChange}
+//       placeholder={placeholder}
+//       className={className}
+//       rows={1}
+//     />
+//   );
+// }
 
 function Field({
   title,

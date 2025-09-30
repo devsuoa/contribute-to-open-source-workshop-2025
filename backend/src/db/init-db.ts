@@ -137,7 +137,7 @@ const seedDb = () => {
 
     const insertCompetition = db.prepare('INSERT INTO competitions (name, start_time, end_time) VALUES (?, ?, ?)');
     COMPETITIONS.forEach(comp => {
-      insertCompetition.run(comp.name, comp.start_time.toISOString(), comp.end_time.toISOString());
+      insertCompetition.run(comp.name, comp.start_time, comp.end_time);
     });
     insertCompetition.finalize();
 

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
-import { getPastCompetitions, getUpcomingCompetitions, getProblemsByCompetitionId, getCompetitionById, getUserCompetitionStatus } from "../../db/db-utils";
-import { Problem } from "../../types/types";
+import { getPastCompetitions, getUpcomingCompetitions, getProblemsByCompetitionId, getCompetitionById, getUserProblemStatus } from "../../db/db-utils";
+import { Problem, UserProblemStatus } from "../../types/types";
 
 const router = express.Router();
 
@@ -48,23 +48,18 @@ router.get("/:competitionId/problems", async (req: Request, res: Response) => {
       });
       return;
     }
-    // Get solved status for each problem
-    const status = await getUserCompetitionStatus(Number(userId), Number(competitionId));
-    const solvedIds = new Set(
-      (status?.problems || [])
-        .filter((p) => p.solved)
-        .map((p) => p.problem_id)
-    );
-    const solved: Problem[] = [];
-    const unsolved: Problem[] = [];
-    problems.forEach((problem) => {
-      if (solvedIds.has(problem.id)) {
-        solved.push({ ...problem });
-      } else {
-        unsolved.push({ ...problem });
+    const userProblemStatuses: UserProblemStatus[] = [];
+    for (const problem of problems) {
+      const status = await getUserProblemStatus(Number(userId), problem.id);
+      if (status) {
+        userProblemStatuses.push(status);
       }
-    });
-    res.json({ solved: solved, unsolved: unsolved });
+    }
+
+    const solvedIds = new Set(userProblemStatuses.filter(s => s.solved).map(s => s.problem_id));
+    const solved: Problem[] = problems.filter(problem => solvedIds.has(problem.id));
+    const unsolved: Problem[] = problems.filter(problem => !solvedIds.has(problem.id));
+    res.json({ solved, unsolved });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });

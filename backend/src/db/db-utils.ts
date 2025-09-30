@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Import sqlite3
 import sqlite3 from 'sqlite3';
 import { User, Problem, Competition, UserProblemStatus, UserToken, CompetitionUserStatus, Submission } from '../types/types';
@@ -205,7 +206,7 @@ export const createUserProblemStatus = (userId: number, problemId: number): Prom
 export const updateUserProblemStatus = (userProblemStatus: UserProblemStatus): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
         db.run('REPLACE INTO user_problem_status (user_id, problem_id, last_attempt, solved) VALUES (?, ?, ?, ?)',
-            [userProblemStatus.user_id, userProblemStatus.problem_id, userProblemStatus.last_attempt && userProblemStatus.last_attempt.toISOString(), userProblemStatus.solved ? 1 : 0],
+            [userProblemStatus.user_id, userProblemStatus.problem_id, userProblemStatus.last_attempt && userProblemStatus.last_attempt, userProblemStatus.solved ? 1 : 0],
             function (err) {
                 if (err) {
                     return reject(err);
@@ -261,7 +262,7 @@ export const updateUserCompetitionStatus = (competitionUserStatus: CompetitionUs
 export const createUserToken = (userId: number, token: string, expiresAt: Date): Promise<UserToken> => {
     return new Promise<UserToken>((resolve, reject) => {
         db.run('INSERT INTO user_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
-            [userId, token, expiresAt.toISOString()],
+            [userId, token, expiresAt],
             function (err) {
                 if (err) {
                     return reject(err);
