@@ -18,13 +18,15 @@ import {
 import styles from "./ProblemSubmissionsCard.module.css";
 import { useUser } from "@/contexts/UserContext";
 
-interface Submission {
-  _id: string;
-  language: string;
-  verdict: string;
-  sourceCode: string;
-  submittedAt: string;
+export interface Submission {
+  competition_id: number;
+  problem_id: number;
+  user_id: number;
+  content: string;
+  submitted_at: Date;
+  verdict: "Pending" | "Accepted" | "Rejected" | "Error";
 }
+
 
 const verdictIcon = (v: string) =>
   v.toLowerCase() === "accepted" ? (
@@ -85,7 +87,7 @@ export default function ProblemSubmissionsCard() {
         {!loading && subs.length > 0 && (
           <Accordion type="single" collapsible className="space-y-3">
             {subs.map((s, idx) => (
-              <AccordionItem key={s._id} value={s._id} className="border-0">
+              <AccordionItem key={idx} value={idx.toString()} className="border-0">
                 <div className="border border-border rounded-lg bg-[#1F1F1F] overflow-hidden">
                   <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-[#1F1F1F]/80 w-full cursor-pointer">
                     <div className="flex items-center justify-between w-full">
@@ -101,24 +103,8 @@ export default function ProblemSubmissionsCard() {
                               icon={faClock}
                               className="h-3 w-3"
                             />
-                            {s.submittedAt
-                              ? new Date(s.submittedAt).toLocaleString(
-                                  "en-NZ",
-                                  {
-                                    timeZone: "Pacific/Auckland",
-                                    day: "2-digit",
-                                    month: "short",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    hour12: false,
-                                  },
-                                )
-                              : "—"}
+                            {s.submitted_at ? s.submitted_at.toString() : "-"}
                           </div>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
-                          <FontAwesomeIcon icon={faCode} className="h-3 w-3" />
-                          {s.language.toUpperCase()}
                         </div>
                       </div>
                       {/* verdict */}
@@ -138,11 +124,11 @@ export default function ProblemSubmissionsCard() {
                           className="h-4 w-4 text-muted-foreground"
                         />
                         <span className="text-xs font-medium text-muted-foreground">
-                          Source Code
+                          Content
                         </span>
                       </div>
                       <pre className="text-xs bg-background border border-[#2F2F2F] rounded-md p-3 overflow-x-auto whitespace-pre-wrap break-words font-mono">
-                        {s.sourceCode}
+                        {s.content}
                       </pre>
                     </div>
                   </AccordionContent>
