@@ -57,7 +57,6 @@ const StatusBarCompetition = () => {
         const { data } = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/api/competitions/${competitionId}?user=${userId}`,
         );
-
         setPoints(typeof data.points === "number" ? data.points : 0);
 
         const end = new Date(data.endTime).getTime();
@@ -91,7 +90,7 @@ const StatusBarCompetition = () => {
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [competitionId]);
+  }, [competitionId, userId]);
 
   return (
     <div className={styles.statusBar}>

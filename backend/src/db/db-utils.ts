@@ -76,66 +76,93 @@ export const getAllProblems = (): Promise<Problem[]> => {
     });
 }
 
-export const getCompetitionById = (id: number): Promise<Competition | null> => {
+export const getCompetitionById = async (id: number): Promise<Competition | null> => {
     return new Promise<Competition | null>((resolve, reject) => {
-        db.get('SELECT * FROM competitions WHERE id = ?', [id], (err, row: any) => {
+        db.get('SELECT * FROM competitions WHERE id = ?', [id], async (err, row: any) => {
             if (err) {
                 return reject(err);
             }
-            resolve(row ? { id: row.id, name: row.name, startTime: new Date(row.start_time), endTime: new Date(row.end_time) } : null);
+            if (!row) return resolve(null);
+            try {
+                const problems = await getProblemsByCompetitionId(id);
+                resolve({
+                    id: row.id,
+                    name: row.name,
+                    startTime: new Date(row.start_time),
+                    endTime: new Date(row.end_time),
+                    problems
+                });
+            } catch (err2) {
+                reject(err2);
+            }
         });
     });
-}
+};
 
 export const getAllCompetitions = (): Promise<Competition[]> => {
-    return new Promise<Competition[]>((resolve, reject) => {
-        db.all('SELECT * FROM competitions', [], (err, rows: any[]) => {
+    return new Promise<Competition[]>(async (resolve, reject) => {
+        db.all('SELECT * FROM competitions', [], async (err, rows: any[]) => {
             if (err) {
                 return reject(err);
             }
-            const competitions = rows.map(row => ({
-                id: row.id,
-                name: row.name,
-                startTime: new Date(row.start_time),
-                endTime: new Date(row.end_time)
-            }));
-            resolve(competitions);
+            try {
+                const competitions = await Promise.all(rows.map(async row => ({
+                    id: row.id,
+                    name: row.name,
+                    startTime: new Date(row.start_time),
+                    endTime: new Date(row.end_time),
+                    problems: await getProblemsByCompetitionId(row.id)
+                })));
+                resolve(competitions);
+            } catch (err2) {
+                reject(err2);
+            }
         });
     });
 }
 
 export const getPastCompetitions = (): Promise<Competition[]> => {
-    return new Promise<Competition[]>((resolve, reject) => {
+    return new Promise<Competition[]>(async (resolve, reject) => {
         const now = new Date().toISOString();
-        db.all('SELECT * FROM competitions WHERE end_time < ?', [now], (err, rows: any[]) => {
+        db.all('SELECT * FROM competitions WHERE end_time < ?', [now], async (err, rows: any[]) => {
             if (err) {
                 return reject(err);
             }
-            const competitions = rows.map(row => ({
-                id: row.id,
-                name: row.name,
-                startTime: new Date(row.start_time),
-                endTime: new Date(row.end_time)
-            }));
-            resolve(competitions);
+            try {
+                const competitions = await Promise.all(rows.map(async row => ({
+                    id: row.id,
+                    name: row.name,
+                    startTime: new Date(row.start_time),
+                    endTime: new Date(row.end_time),
+                    problems: await getProblemsByCompetitionId(row.id)
+                })));
+                resolve(competitions);
+            } catch (err2) {
+                reject(err2);
+            }
         });
     });
 }
 
 export const getUpcomingCompetitions = (): Promise<Competition[]> => {
-    return new Promise<Competition[]>((resolve, reject) => {
+    return new Promise<Competition[]>(async (resolve, reject) => {
         const now = new Date().toISOString();
-        db.all('SELECT * FROM competitions WHERE end_time >= ?', [now], (err, rows: any[]) => {
+        db.all('SELECT * FROM competitions WHERE end_time >= ?', [now], async (err, rows: any[]) => {
             if (err) {
                 return reject(err);
             }
-            const competitions = rows.map(row => ({
-                id: row.id,
-                name: row.name,
-                startTime: new Date(row.start_time),
-                endTime: new Date(row.end_time)
-            }));
-            resolve(competitions);
+            try {
+                const competitions = await Promise.all(rows.map(async row => ({
+                    id: row.id,
+                    name: row.name,
+                    startTime: new Date(row.start_time),
+                    endTime: new Date(row.end_time),
+                    problems: await getProblemsByCompetitionId(row.id)
+                })));
+                resolve(competitions);
+            } catch (err2) {
+                reject(err2);
+            }
         });
     });
 }

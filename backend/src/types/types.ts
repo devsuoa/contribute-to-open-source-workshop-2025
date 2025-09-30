@@ -30,6 +30,7 @@ export interface Competition {
   name: string;
   startTime: Date; // ISO timestamp
   endTime: Date;   // ISO timestamp
+  problems: Problem[];
 }
 
 export interface CompetitionUserStatus {

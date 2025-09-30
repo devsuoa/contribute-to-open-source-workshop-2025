@@ -8,12 +8,12 @@ import TopicCard from "@/components/competition-components/topic-card/TopicCard"
 import styles from "./CompetitionProblemSet.module.css";
 import { useUser } from "@/contexts/UserContext";
 
-interface Problem {
-  _id: string;
-  name: string;
-  problemPoints: number;
-  problemTag?: string;
-  solved?: boolean;
+export interface Problem {
+  id: number;
+  title: string;
+  description: string;
+  solution: string;
+  solved:boolean;
 }
 
 const CompetitionProblemSet = () => {
@@ -32,8 +32,20 @@ const CompetitionProblemSet = () => {
         const url =
           `${base}/api/competitions/${competitionId}/problems?user=${userId}`;
 
-        const res = await axios.get<Record<string, Problem[]>>(url);
-        setData(res.data);
+        const res = await axios.get(url);
+        const solvedProblems = res.data.solved.map((p: Problem) => ({ ...p, solved: true }));
+        const unsolvedProblems = res.data.unsolved.map((p: Problem) => ({ ...p, solved: false }));
+        const allProblems = [...solvedProblems, ...unsolvedProblems];
+        // Group problems by tag (currently all "Uncategorised")
+        const problemRecord = allProblems.reduce((acc: Record<string, Problem[]>, problem: Problem) => {
+          const tag = "Uncategorised";
+          if (!acc[tag]) {
+            acc[tag] = [];
+          }
+          acc[tag].push(problem);
+          return acc;
+        }, {});
+        setData(problemRecord);
       } catch (err) {
         console.error("Error fetching problem set:", err);
       } finally {
@@ -69,13 +81,13 @@ const CompetitionProblemSet = () => {
           <h2 className={styles.sectionHeading}>{tag}</h2>
 
           <div className={styles.cardsGrid}>
-            <TopicCard key={`${tag}`} name={`${tag}`} topic={tag} />
+            {/* <TopicCard key={`${tag}`} name={`${tag}`} topic={tag} /> */}
             {problems.map((p) => (
               <ProblemCard
-                key={p._id}
-                name={p.name}
-                points={p.problemPoints}
-                problemId={p._id}
+                key={p.id}
+                name={p.title}
+                points={10}
+                problemId={p.id.toString()}
                 solved={p.solved}
               />
             ))}

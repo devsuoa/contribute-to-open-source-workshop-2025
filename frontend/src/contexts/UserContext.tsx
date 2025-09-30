@@ -12,7 +12,7 @@ export const UserProvider = ({
     children,
 }: UserProviderProps) => {
     const [userId, setUserId] = useState<string>("");
-    const [userToken, setUserToken] = useState<string>("");
+    const [userToken, setUserToken] = useState<string>(() => localStorage.getItem("userToken") || "");
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {

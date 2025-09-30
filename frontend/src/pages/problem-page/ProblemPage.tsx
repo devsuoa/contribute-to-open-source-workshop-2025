@@ -26,7 +26,6 @@ const ProblemPage = () => {
           `${import.meta.env.VITE_API_BASE_URL}/api/problems/${problemId}`,
         );
         setProblem(res.data);
-        console.log("Fetched problem:", res.data);
       } catch (err) {
         console.error("Error fetching problem:", err);
       } finally {
