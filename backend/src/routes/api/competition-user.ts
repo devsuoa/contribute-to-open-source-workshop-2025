@@ -19,11 +19,9 @@ router.post("/:competitionId/progress", async (req: Request, res: Response) => {
   const { userId } = req.body;
   try {
     await createUserCompetitionStatus(userId, Number(competitionId));
-    res
-      .status(200)
-      .json({
-        message: `Competition user status created for user ${userId} in competition ${competitionId}`,
-      });
+    res.status(200).json({
+      message: `Competition user status created for user ${userId} in competition ${competitionId}`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });
@@ -69,11 +67,9 @@ router.patch(
         Number(competitionId),
       );
       if (!result) {
-        res
-          .status(404)
-          .json({
-            error: `Competition user status not found for user ${userId} in competition ${competitionId}`,
-          });
+        res.status(404).json({
+          error: `Competition user status not found for user ${userId} in competition ${competitionId}`,
+        });
         return;
       }
       const updatedProblemStatus: UserProblemStatus = {
@@ -91,11 +87,9 @@ router.patch(
       };
       await updateUserCompetitionStatus(updatedCompetitionStatus);
 
-      res
-        .status(200)
-        .json({
-          message: `Problem ${problemId} marked as solved for user ${userId} in competition ${competitionId}`,
-        });
+      res.status(200).json({
+        message: `Problem ${problemId} marked as solved for user ${userId} in competition ${competitionId}`,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error });

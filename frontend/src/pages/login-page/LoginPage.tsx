@@ -26,8 +26,9 @@ const LoginPage = () => {
       setUserToken(res.data.token);
       saveToLocalStorage(res.data.userId, res.data.token);
       window.location.href = "/"; // Redirect after login
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Login failed. Please try again.");
+    } catch (err) {
+      console.log(err);
+      setError("Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
