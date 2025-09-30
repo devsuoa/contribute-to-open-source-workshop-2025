@@ -1,26 +1,14 @@
-# DEVS Contest Platform
+# Contribute to Open-source Workshop (COW🐮) 2025
 
 <p align="center">
   <img width="100" alt="devs-logo" src="frontend/public/devs-favicon.svg" />
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white&style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white&style=for-the-badge" />
-  <img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black&style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Node.js-23.x-green?logo=node.js&logoColor=white&style=for-the-badge" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge" />
-</p>
+## Architecture
 
-## 💻 About
+## Getting Started
 
-## 🖼️ Images
-
-## 🏗️ Architecture
-
-## 🚀 Getting Started
-
-### 1. 📦 Prerequisites
+### 1. Prerequisites
 
 Make sure you have the following installed:
 
@@ -34,18 +22,36 @@ Node.js can be installed [here](https://nodejs.org/en/download). Once downloaded
 node -v
 ```
 
-### 2. ⬇️ Clone the Repository
+### 2. Clone the Repository
 
 ```bash
-git clone <PROJECT_URL>
-cd contest-platform
+git clone https://github.com/devsuoa/contribute-to-open-source-workshop-2025.git
+cd contribute-to-open-source-workshop-2025
 ```
 
-### 3. 🔐 Environment Variables
+### 3. Environment Variables
 
-There are two `.env` files. One of them should be placed in the `frontend` folder, the other should be placed in the `backend` folder. Temporarily, the `.env` files have been placed [here](https://drive.google.com/drive/folders/1tHDZJMfA6SsEMivJBKn2lWmyk04RuCrI?usp=sharing). When downloaded from Google Drive, the `.` prefix may be removed, thus add it back on to make it a hidden file.
+There are two `.env` files. One of them should be placed in the `frontend` folder, the other should be placed in the `backend` folder.
 
-### 4. 📁 Install Dependencies
+Create a frontend `.env` and add the following line:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+Create a backend `.env` and add the following line:
+
+```env
+PORT=3000
+```
+
+Your project tree should look like this:
+
+![env](/images/env.png)
+
+‼️‼️Note that this is for demonstration purposes only. **DO NOT** ever leak your `.env` content to the public, treat them like passwords.
+
+### 4. Install Dependencies
 
 `npm install` in both the `frontend` and `backend` directory seperately:
 
@@ -59,7 +65,19 @@ cd backend
 npm install
 ```
 
-### 4. 🚀 Start the App
+![install](/images/install.png)
+
+### 5. Initialise Database
+
+Run the `init-db.ts` script in `backend/src/db` by the following command (while in the `backend` directory):
+
+```bash
+npm run init-db
+```
+
+This will clear the existing database and populate it with the values defined in the script. The database is located at `backend/database.sqlite`.
+
+### 6. Start the App
 
 `npm run dev` in both the `frontend` and `backend` directory seperately. In other words, run `npm run dev` for both the frontend and backend in separate terminal tabs:
 
@@ -73,38 +91,43 @@ cd backend
 npm run dev
 ```
 
-## 🗃️ Database Modifications
+## Making a Contribution
 
-To make modifications to the data in the database "manually", there are two main ways. Firstly, there is a `init-db.ts` script in `backend/src/db`. If you run:
+These git actions can be performed anywhere in the project directory (unless there is a git submodule, which we don't in this example).
 
-```bash
-npm run init-db
-```
-
-This will clear the existing database and populate it with the values defined in the `init-db.ts` script.
-
-For minor modifications, you can also edit the existing database through [MongoDB Compass](https://www.mongodb.com/try/download/compass), which is a GUI viewer/editor of the database. To link up the existing databse, you will want to:
-
-1. Click on the plus button to add a new connection
-2. Copy in the `MONGODB_CONNECTION_STRING` value from the backend `.env` file into the URI field.
-3. Click Save & Connect
-
-## 🎨 Linting and Formatting
-
-Within the `frontend` and `backend` folder, you can run:
+### 1. Create a Branch
 
 ```bash
-npm run format
+git checkout -b your-branch-name
 ```
 
-Which will run the Prettier formatter on all the code within either `frontend` or `backend`. Similarly:
+There are usually naming conventions for branches. For introducing a new feature, use `feature/your-feature-name`. For fixing a bug, use `bugfix/your-bug-name`.
+
+### 2. Commit Changes
+
+After you have made changes, stage and commit them to your local repository:
 
 ```bash
-npm run lint
+git add .
+git commit -m "Your commit message"
 ```
 
-Can either fix or identify linting errors.
+### 3. Push Changes
 
-## © Attributions
+Push you changes so everyone else can see them:
 
-## 👥 Contributors
+```bash
+git push origin your-branch-name
+```
+
+## Activities
+
+We are excited to announce the DEVS online contest platform 🎉🎉🎉! However, due to underpaid and overworked developers, there are some ~~unintended bugs~~ unique "features" 👀. We need your help to make it better!
+
+### Easy
+
+### Medium
+
+### Hard
+
+- Competition Leaderboard
