@@ -26,10 +26,6 @@ export const ProblemProvider = ({
   const [consoleLoading, setConsoleLoading] = useState(false);
 
   useEffect(() => {
-    console.log("❓ Problem: ", problemName);
-    console.log("📜 Description:", problemDescription);
-
-    console.log("⌛ Solution:", problemSolution);
   }, [problemName, problemDescription, problemSolution]);
 
   return (
