@@ -103,16 +103,16 @@ export default function ProblemSubmissionsCard() {
                             />
                             {s.submittedAt
                               ? new Date(s.submittedAt).toLocaleString(
-                                "en-NZ",
-                                {
-                                  timeZone: "Pacific/Auckland",
-                                  day: "2-digit",
-                                  month: "short",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  hour12: false,
-                                },
-                              )
+                                  "en-NZ",
+                                  {
+                                    timeZone: "Pacific/Auckland",
+                                    day: "2-digit",
+                                    month: "short",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false,
+                                  },
+                                )
                               : "—"}
                           </div>
                         </div>

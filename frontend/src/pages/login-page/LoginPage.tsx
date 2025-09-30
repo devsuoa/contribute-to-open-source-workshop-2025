@@ -20,16 +20,14 @@ const LoginPage = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/users/login`,
         { username, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setUserId(res.data.userId);
       setUserToken(res.data.token);
       saveToLocalStorage(res.data.userId, res.data.token);
       window.location.href = "/"; // Redirect after login
     } catch (err: any) {
-      setError(
-        err.response?.data?.error || "Login failed. Please try again."
-      );
+      setError(err.response?.data?.error || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -48,7 +46,7 @@ const LoginPage = () => {
             type="text"
             placeholder="Username"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             required
             className={styles.input}
           />
@@ -56,15 +54,11 @@ const LoginPage = () => {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className={styles.input}
           />
-          <button
-            type="submit"
-            className={styles.button}
-            disabled={loading}
-          >
+          <button type="submit" className={styles.button} disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
           {error && <div className={styles.error}>{error}</div>}

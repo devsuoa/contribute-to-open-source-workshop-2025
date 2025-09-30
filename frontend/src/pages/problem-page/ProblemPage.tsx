@@ -40,7 +40,6 @@ const ProblemPage = () => {
     return null;
   }
 
-
   return (
     <div className={styles.container}>
       <Problem

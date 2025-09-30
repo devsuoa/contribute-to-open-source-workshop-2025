@@ -12,7 +12,7 @@ export interface Problem {
   title: string;
   description: string;
   solution: string;
-  solved:boolean;
+  solved: boolean;
 }
 
 const CompetitionProblemSet = () => {
@@ -28,22 +28,30 @@ const CompetitionProblemSet = () => {
     (async () => {
       try {
         const base = import.meta.env.VITE_API_BASE_URL;
-        const url =
-          `${base}/api/competitions/${competitionId}/problems?user=${userId}`;
+        const url = `${base}/api/competitions/${competitionId}/problems?user=${userId}`;
 
         const res = await axios.get(url);
-        const solvedProblems = res.data.solved.map((p: Problem) => ({ ...p, solved: true }));
-        const unsolvedProblems = res.data.unsolved.map((p: Problem) => ({ ...p, solved: false }));
+        const solvedProblems = res.data.solved.map((p: Problem) => ({
+          ...p,
+          solved: true,
+        }));
+        const unsolvedProblems = res.data.unsolved.map((p: Problem) => ({
+          ...p,
+          solved: false,
+        }));
         const allProblems = [...solvedProblems, ...unsolvedProblems];
         // Group problems by tag (currently all "Uncategorised")
-        const problemRecord = allProblems.reduce((acc: Record<string, Problem[]>, problem: Problem) => {
-          const tag = "Uncategorised";
-          if (!acc[tag]) {
-            acc[tag] = [];
-          }
-          acc[tag].push(problem);
-          return acc;
-        }, {});
+        const problemRecord = allProblems.reduce(
+          (acc: Record<string, Problem[]>, problem: Problem) => {
+            const tag = "Uncategorised";
+            if (!acc[tag]) {
+              acc[tag] = [];
+            }
+            acc[tag].push(problem);
+            return acc;
+          },
+          {},
+        );
         setData(problemRecord);
       } catch (err) {
         console.error("Error fetching problem set:", err);

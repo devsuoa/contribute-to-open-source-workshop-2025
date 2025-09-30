@@ -26,7 +26,7 @@ const CompetitionCard = ({
 }: CompetitionCardProps) => {
   const navigate = useNavigate();
   const now = new Date();
-  const {userId} = useUser();
+  const { userId } = useUser();
 
   const formattedDate = format(startTime, "dd MMM yyyy");
   const formattedStart = format(startTime, "h:mm a");

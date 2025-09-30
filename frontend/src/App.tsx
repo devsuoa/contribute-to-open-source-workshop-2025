@@ -16,7 +16,6 @@ import { UserProvider } from "./contexts/UserContext";
 function App() {
   return (
     <UserProvider>
-
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
           {/* Public Routes*/}

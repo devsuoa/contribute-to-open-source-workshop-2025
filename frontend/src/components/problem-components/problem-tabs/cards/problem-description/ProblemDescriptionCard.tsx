@@ -3,16 +3,12 @@ import { Badge } from "@/components/ui/badge";
 import styles from "./ProblemDescriptionCard.module.css";
 import { useProblem } from "@/contexts/ProblemContext";
 
-
 export default function ProblemDescriptionCard() {
   // const { competitionId, problemId } = useParams<{
   //   competitionId: string;
   //   problemId: string;
   // }>();
-  const {
-    problemName,
-    problemDescription,
-  } = useProblem();
+  const { problemName, problemDescription } = useProblem();
   const problemPoints = 10;
   const problemTag = "Uncategorised";
   return (
@@ -27,7 +23,6 @@ export default function ProblemDescriptionCard() {
 
       <div className={styles.scrollArea}>
         <p>{problemDescription}</p>
-
       </div>
     </div>
   );

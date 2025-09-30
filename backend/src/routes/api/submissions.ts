@@ -12,19 +12,19 @@ const router = express.Router();
 router.post("/", async (req: Request, res: Response) => {
   const { competition, problem, user, content, verdict } = req.body;
   try {
-    const newSubmission:Submission = {
+    const newSubmission: Submission = {
       competition_id: competition.id,
       problem_id: problem.id,
       user_id: user.id,
       content,
       submitted_at: new Date(),
       verdict,
-    }
+    };
     await createSubmission(newSubmission);
     res.status(201).json({ message: "Submission created successfully" });
   } catch (error) {
     console.error("Error creating submission:", error);
-    res.status(500).json({ error});
+    res.status(500).json({ error });
   }
 });
 
@@ -38,7 +38,11 @@ router.get(
   async (req: Request, res: Response) => {
     const { competitionId, problemId, userId } = req.params;
     try {
-      const result = await getSubmissions(Number(competitionId), Number(problemId), Number(userId));
+      const result = await getSubmissions(
+        Number(competitionId),
+        Number(problemId),
+        Number(userId),
+      );
       res.status(200).json(result);
     } catch (error) {
       console.error("Error fetching submissions:", error);

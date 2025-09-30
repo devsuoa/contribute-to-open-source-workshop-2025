@@ -22,7 +22,6 @@ export const ProblemProvider = ({
 
   const [activeTab, setActiveTab] = useState("problem");
 
-
   const [consoleOutput, setConsoleOutput] = useState("");
   const [consoleLoading, setConsoleLoading] = useState(false);
 

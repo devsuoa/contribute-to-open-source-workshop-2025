@@ -1,5 +1,11 @@
 import express, { Request, Response } from "express";
-import { getPastCompetitions, getUpcomingCompetitions, getProblemsByCompetitionId, getCompetitionById, getUserProblemStatus } from "../../db/db-utils";
+import {
+  getPastCompetitions,
+  getUpcomingCompetitions,
+  getProblemsByCompetitionId,
+  getCompetitionById,
+  getUserProblemStatus,
+} from "../../db/db-utils";
 import { Problem, UserProblemStatus } from "../../types/types";
 
 const router = express.Router();
@@ -40,11 +46,12 @@ router.get("/:competitionId/problems", async (req: Request, res: Response) => {
   const { competitionId } = req.params;
   const userId = req.query.user as string | undefined;
   try {
-    const problems: Problem[] = await getProblemsByCompetitionId(Number(competitionId)) || [];
+    const problems: Problem[] =
+      (await getProblemsByCompetitionId(Number(competitionId))) || [];
     if (!userId) {
       res.json({
         solved: [],
-        unsolved: problems
+        unsolved: problems,
       });
       return;
     }
@@ -56,9 +63,15 @@ router.get("/:competitionId/problems", async (req: Request, res: Response) => {
       }
     }
 
-    const solvedIds = new Set(userProblemStatuses.filter(s => s.solved).map(s => s.problem_id));
-    const solved: Problem[] = problems.filter(problem => solvedIds.has(problem.id));
-    const unsolved: Problem[] = problems.filter(problem => !solvedIds.has(problem.id));
+    const solvedIds = new Set(
+      userProblemStatuses.filter((s) => s.solved).map((s) => s.problem_id),
+    );
+    const solved: Problem[] = problems.filter((problem) =>
+      solvedIds.has(problem.id),
+    );
+    const unsolved: Problem[] = problems.filter(
+      (problem) => !solvedIds.has(problem.id),
+    );
     res.json({ solved, unsolved });
   } catch (error) {
     console.error(error);

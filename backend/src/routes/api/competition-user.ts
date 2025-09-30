@@ -1,5 +1,10 @@
 import express, { Request, Response } from "express";
-import { createUserCompetitionStatus, getUserCompetitionStatus, updateUserCompetitionStatus, updateUserProblemStatus } from "../../db/db-utils";
+import {
+  createUserCompetitionStatus,
+  getUserCompetitionStatus,
+  updateUserCompetitionStatus,
+  updateUserProblemStatus,
+} from "../../db/db-utils";
 import { CompetitionUserStatus, UserProblemStatus } from "../../types/types";
 
 const router = express.Router();
@@ -14,7 +19,11 @@ router.post("/:competitionId/progress", async (req: Request, res: Response) => {
   const { userId } = req.body;
   try {
     await createUserCompetitionStatus(userId, Number(competitionId));
-    res.status(200).json({ message: `Competition user status created for user ${userId} in competition ${competitionId}` });
+    res
+      .status(200)
+      .json({
+        message: `Competition user status created for user ${userId} in competition ${competitionId}`,
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });
@@ -32,7 +41,10 @@ router.get(
     const { competitionId, userId } = req.params;
 
     try {
-      const result = await getUserCompetitionStatus(Number(userId), Number(competitionId));
+      const result = await getUserCompetitionStatus(
+        Number(userId),
+        Number(competitionId),
+      );
       res.json(result);
     } catch (error) {
       console.error(error);
@@ -52,9 +64,16 @@ router.patch(
     const { competitionId, userId } = req.params;
     const { problemId, addPoints = 0 } = req.body;
     try {
-      const result = await getUserCompetitionStatus(Number(userId), Number(competitionId));
+      const result = await getUserCompetitionStatus(
+        Number(userId),
+        Number(competitionId),
+      );
       if (!result) {
-        res.status(404).json({ error: `Competition user status not found for user ${userId} in competition ${competitionId}` });
+        res
+          .status(404)
+          .json({
+            error: `Competition user status not found for user ${userId} in competition ${competitionId}`,
+          });
         return;
       }
       const updatedProblemStatus: UserProblemStatus = {
@@ -62,17 +81,21 @@ router.patch(
         problem_id: Number(problemId),
         last_attempt: new Date(),
         solved: true,
-      }
+      };
       await updateUserProblemStatus(updatedProblemStatus);
 
       const updatedCompetitionStatus: CompetitionUserStatus = {
         competition_id: result.competition_id,
         user_id: Number(userId),
-        points: result.points + addPoints
+        points: result.points + addPoints,
       };
       await updateUserCompetitionStatus(updatedCompetitionStatus);
-      
-      res.status(200).json({ message: `Problem ${problemId} marked as solved for user ${userId} in competition ${competitionId}` });
+
+      res
+        .status(200)
+        .json({
+          message: `Problem ${problemId} marked as solved for user ${userId} in competition ${competitionId}`,
+        });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error });

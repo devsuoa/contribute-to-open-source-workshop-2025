@@ -29,7 +29,7 @@ export interface Competition {
   id: number;
   name: string;
   startTime: Date; // ISO timestamp
-  endTime: Date;   // ISO timestamp
+  endTime: Date; // ISO timestamp
   problems: Problem[];
 }
 
@@ -45,5 +45,5 @@ export interface Submission {
   user_id: number;
   content: string;
   submitted_at: Date; // ISO timestamp
-  verdict: 'Pending' | 'Accepted' | 'Rejected' | 'Error';
+  verdict: "Pending" | "Accepted" | "Rejected" | "Error";
 }

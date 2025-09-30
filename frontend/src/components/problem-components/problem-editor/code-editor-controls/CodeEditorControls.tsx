@@ -1,10 +1,7 @@
 import styles from "./CodeEditorControls.module.css";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faRotateLeft,
-  faPaperPlane,
-} from "@fortawesome/free-solid-svg-icons";
+import { faRotateLeft, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useProblem } from "@/contexts/ProblemContext";
 import type { TestResult } from "@/types/types";
 import { toast } from "sonner";
@@ -18,12 +15,7 @@ const CodeEditorControls = () => {
   }>();
   const { userId } = useUser();
 
-  const {
-    setTestResults,
-    code,
-    setCode,
-    setActiveTab,
-  } = useProblem();
+  const { setTestResults, code, setCode, setActiveTab } = useProblem();
 
   const showSuccessToast = () => {
     toast.success("🎉 All tests passed! Beautiful work! 🌟", {
@@ -107,10 +99,10 @@ const CodeEditorControls = () => {
     }
     const answer = code.trim();
     newResults.push({
-        inputs: [answer],
-        expected: problemSolution,
-        pass: answer === problemSolution,
-      });
+      inputs: [answer],
+      expected: problemSolution,
+      pass: answer === problemSolution,
+    });
 
     setTestResults(newResults);
 
@@ -120,9 +112,7 @@ const CodeEditorControls = () => {
     if (passedTests === totalTests && totalTests > 0) {
       await markSolved();
       await createSubmission("Accepted");
-      window.dispatchEvent(
-        new CustomEvent("points:add", { detail: 10 }),
-      );
+      window.dispatchEvent(new CustomEvent("points:add", { detail: 10 }));
       showSuccessToast();
     } else {
       await createSubmission("Rejected");
@@ -134,12 +124,10 @@ const CodeEditorControls = () => {
     setCode("");
   };
 
-
   return (
     <>
       <div className={styles.buttonRow}>
         <div className={styles.leftButtons}>
-
           <Button
             variant="outline"
             className={styles.iconButton}

@@ -9,10 +9,7 @@ import styles from "./ProblemConsoleCard.module.css";
 import { BarLoader } from "react-spinners";
 
 export default function ProblemConsoleCard() {
-  const {
-    consoleOutput,
-    consoleLoading,
-  } = useProblem();
+  const { consoleOutput, consoleLoading } = useProblem();
 
   // const handleChange = (idx: number, v: string) =>
   //   setRunArgs((p) => Object.assign([...p], { [idx]: v }));
@@ -38,7 +35,7 @@ export default function ProblemConsoleCard() {
       </div>
 
       <div className={styles.scrollArea}>
-        {(
+        {
           <>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
               {/* {sig.parameters.map((p, i) => (
@@ -65,7 +62,7 @@ export default function ProblemConsoleCard() {
               />
             </div>
           </>
-        )}
+        }
       </div>
     </div>
   );
