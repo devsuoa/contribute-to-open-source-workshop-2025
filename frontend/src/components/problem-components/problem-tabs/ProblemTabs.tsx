@@ -5,7 +5,6 @@ import ProblemDescriptionCard from "./cards/problem-description/ProblemDescripti
 import ProblemTestsCard from "./cards/problem-tests/ProblemTestsCard";
 
 import { useProblem } from "@/contexts/ProblemContext";
-import ProblemConsoleCard from "./cards/problem-console/ProblemConsoleCard";
 import ProblemSubmissionsCard from "./cards/problem-submissions/ProblemSubmissionsCard";
 
 export function ProblemTabs() {
@@ -22,9 +21,6 @@ export function ProblemTabs() {
           <TabsTrigger value="problem" className={styles.tabsTrigger}>
             Problem
           </TabsTrigger>
-          <TabsTrigger value="console" className={styles.tabsTrigger}>
-            Console
-          </TabsTrigger>
           <TabsTrigger value="tests" className={styles.tabsTrigger}>
             Tests
           </TabsTrigger>
@@ -35,9 +31,6 @@ export function ProblemTabs() {
 
         <TabsContent value="problem" className={styles.tabsContent}>
           <ProblemDescriptionCard />
-        </TabsContent>
-        <TabsContent value="console" className={styles.tabsContent}>
-          <ProblemConsoleCard />
         </TabsContent>
         <TabsContent value="tests" className={styles.tabsContent}>
           <ProblemTestsCard />
