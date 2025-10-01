@@ -158,7 +158,11 @@ We are excited to announce the DEVS online contest platform 🎉🎉🎉! Howeve
 
 Currently, when you make a submission the expected value will be shown in the submissions tab. We don't want that! Remove it on the frontend.
 
-#### E2: 
+#### E2: One Minute to Midnight
+
+Add some visual effects to the competition timer when there is less than 1 minute left.
+
+![clock](/images/clock.png)
 
 ### Medium
 
@@ -166,9 +170,11 @@ Currently, when you make a submission the expected value will be shown in the su
 
 In `backend/src/routes/api/submissions.ts`, the POST method to make a submission will create a new entry to the `competition_user_status` table every time a submission is made. We don't need to do that if the user already has a previous entry to this competition!
 
-#### M2: 
+#### M2: Base Defender
 
-- Path protection
+Some paths are not protected, meaning that the user can land directly on them by typing the full url. For example, a user can skip the home page and go directly to a competition page, causing the database to not create an entry for this user. We need to protect these paths by redirecting the user to other paths when they are trying to access them directly.
+
+**Hint**: We can track the previous page that the user is on in a context and require some pages to have a specific previous page. For example, competition page requires home. If the user tried to access competition page directly, the previous page is `null` and they will be redirected to home instead. If they are doing it properly, the previous page should be `home`.
 
 ### Hard
 
@@ -176,6 +182,6 @@ In `backend/src/routes/api/submissions.ts`, the POST method to make a submission
 
 Instead of using mock users, we want new users to be able to register themselves. Implement a registration page and the corresponding backend logic that adds the new user to the database.
 
-#### H2: Be the Best
+#### H2: Rank Does In Fact Matter
 
 The database keeps track of points scored by each user in each competition. Implement a leaderboard page that shows the ranking of users based on their total points in a competition. (Some of the UI components are already exising somewhere in the codebase, you just need to find them 😉)

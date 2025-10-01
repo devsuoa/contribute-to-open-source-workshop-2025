@@ -131,13 +131,14 @@ const seedDb = () => {
   const COMPETITIONS = [
     {
       name: "Weekly Challenge",
-      start_time: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      end_time: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      start_time: new Date(Date.now()), // Start now
+      end_time: new Date(Date.now() + 2 * 60 * 60 * 1000), // End in 2 hours
+      // end_time: new Date(Date.now() + 60 * 1000),  // End in 1 minute for testing
     },
     {
       name: "Past Challenge",
-      start_time: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
-      end_time: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      start_time: new Date(Date.now() -  24 * 60 * 60 * 1000),
+      end_time: new Date(Date.now() -  24 * 50 * 60 * 1000),
     },
   ];
 
