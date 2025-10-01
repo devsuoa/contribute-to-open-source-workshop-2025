@@ -91,6 +91,14 @@ cd backend
 npm run dev
 ```
 
+### 7. Login Credentials
+
+Username: `alice`
+
+Password: `password123`
+
+The login credentials will be saved for 1 hour, afterwards you need to login again.
+
 ## Making a Contribution
 
 These git actions can be performed anywhere in the project directory (unless there is a git submodule, which we don't in this example).
