@@ -47,7 +47,7 @@ PORT=3000
 
 Your project tree should look like this:
 
-![env](/images/env.png)
+![env](/frontend/public/images/env.png)
 
 ‼️‼️Note that this is for demonstration purposes only. **DO NOT** ever leak your `.env` content to the public, treat them like passwords.
 
@@ -65,7 +65,7 @@ cd backend
 npm install
 ```
 
-![install](/images/install.png)
+![install](/frontend/public/images/install.png)
 
 ### 5. Initialise Database
 
@@ -122,7 +122,7 @@ git push origin your-branch-name
 
 After sucessfully pushing, you should be able to see a notification on GitHub to create a pull request.
 
-![pr](/images/pr.png)
+![pr](/frontend/public/images/pr.png)
 
 ### 4. Create a Pull Request
 
@@ -137,7 +137,7 @@ The description usually includes:
 
 Now your pull request is ready for review. However, it needs to pass the formatting and linting checks first.
 
-![review](/images/review.png)
+![review](/frontend/public/images/review.png)
 
 If it fails like the image above, go into your `frontend` and `backend` directories and run:
 
@@ -162,7 +162,7 @@ Currently, when you make a submission the expected value will be shown in the su
 
 Add some visual effects to the competition timer when there is less than 1 minute left.
 
-![clock](/images/clock.png)
+![clock](/frontend/public/images/clock.png)
 
 ### Medium
 
