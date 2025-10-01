@@ -137,8 +137,8 @@ const seedDb = () => {
     },
     {
       name: "Past Challenge",
-      start_time: new Date(Date.now() -  24 * 60 * 60 * 1000),
-      end_time: new Date(Date.now() -  24 * 50 * 60 * 1000),
+      start_time: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      end_time: new Date(Date.now() - 24 * 50 * 60 * 1000),
     },
   ];
 

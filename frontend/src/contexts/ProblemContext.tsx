@@ -25,8 +25,7 @@ export const ProblemProvider = ({
   const [consoleOutput, setConsoleOutput] = useState("");
   const [consoleLoading, setConsoleLoading] = useState(false);
 
-  useEffect(() => {
-  }, [problemName, problemDescription, problemSolution]);
+  useEffect(() => {}, [problemName, problemDescription, problemSolution]);
 
   return (
     <ProblemContext.Provider

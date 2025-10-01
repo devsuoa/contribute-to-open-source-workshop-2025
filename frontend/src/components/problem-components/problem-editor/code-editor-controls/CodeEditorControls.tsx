@@ -47,7 +47,6 @@ const CodeEditorControls = () => {
   };
 
   const handleSubmit = async () => {
-
     const markSolved = async () => {
       if (!competitionId || !problemId) return;
 

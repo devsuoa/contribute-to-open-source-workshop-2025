@@ -28,17 +28,17 @@ const StatusBarProfile = () => {
       <img src={Logo} alt="Statusbar Logo" className={styles.logo} />
 
       {/* Centre: Nav Links */}
-        <nav className="flex items-center gap-2">
-          <NavLink
-            to={`/docs`}
-            className={({ isActive }) =>
-              `${linkClasses} ${isActive ? activeClasses : ""}`
-            }
-          >
-            <FontAwesomeIcon icon={faBook} className="text-sky-400" />
-            Documentation
-          </NavLink>
-        </nav>
+      <nav className="flex items-center gap-2">
+        <NavLink
+          to={`/docs`}
+          className={({ isActive }) =>
+            `${linkClasses} ${isActive ? activeClasses : ""}`
+          }
+        >
+          <FontAwesomeIcon icon={faBook} className="text-sky-400" />
+          Documentation
+        </NavLink>
+      </nav>
 
       {/* Avatar + Dropdown */}
       <DropdownMenu modal={false}>

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse} from "@fortawesome/free-solid-svg-icons";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import ReactMarkdown from "react-markdown";
 import styles from "./CompetitionDocumentation.module.css";
 import { useEffect, useState } from "react";
