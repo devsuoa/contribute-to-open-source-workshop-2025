@@ -124,7 +124,7 @@ const StatusBarCompetition = () => {
           </NavLink> */}
 
           <NavLink
-            to={`/competition/${competitionId}/docs`}
+            to={`/docs`}
             className={({ isActive }) =>
               `${linkClasses} ${isActive ? activeClasses : ""}`
             }

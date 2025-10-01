@@ -41,10 +41,10 @@ function App() {
           >
             <Route index element={<CompetitionProblemSet />} />
             {/* <Route path="leaderboard" element={<CompetitionLeaderboard />} /> */}
-            <Route path="docs" element={<CompetitionDocumentation />} />
             <Route path="problem/:problemId" element={<ProblemPage />} />
             <Route path="topic/:topicSlug" element={<TopicGuideRouter />} />
           </Route>
+          <Route path="/docs" element={<CompetitionDocumentation />} />
         </Routes>
       </ThemeProvider>
     </UserProvider>
