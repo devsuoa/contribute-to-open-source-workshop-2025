@@ -12,6 +12,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ["app.anatol.nz"]
-  }
+    allowedHosts: ["app.anatol.nz"],
+  },
 });
