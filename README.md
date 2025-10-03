@@ -20,14 +20,18 @@ Node.js can be installed [here](https://nodejs.org/en/download). Once downloaded
 node -v
 ```
 
-### 2. Clone the Repository
+### 2. Fork the Repository
+
+Fork the repository as shown in the image below. Then all of your changes should be on your fork!
+
+### 3. Clone the Forked Repository
 
 ```bash
-git clone https://github.com/devsuoa/contribute-to-open-source-workshop-2025.git
+git clone <your_repo>
 cd contribute-to-open-source-workshop-2025
 ```
 
-### 3. Environment Variables
+### 4. Environment Variables
 
 There are two `.env` files. One of them should be placed in the `frontend` folder, the other should be placed in the `backend` folder.
 
@@ -49,7 +53,7 @@ Your project tree should look like this:
 
 ‼️‼️Note that this is for demonstration purposes only. **DO NOT** ever leak your `.env` content to the public, treat them like passwords.
 
-### 4. Install Dependencies
+### 5. Install Dependencies
 
 `npm install` in both the `frontend` and `backend` directory seperately:
 
@@ -65,7 +69,7 @@ npm install
 
 ![install](/frontend/public/images/install.png)
 
-### 5. Initialise Database
+### 6. Initialise Database
 
 Run the `init-db.ts` script in `backend/src/db` by the following command (while in the `backend` directory):
 
@@ -75,7 +79,7 @@ npm run init-db
 
 This will clear the existing database and populate it with the values defined in the script. The database is located at `backend/database.sqlite`.
 
-### 6. Start the App
+### 7. Start the App
 
 `npm run dev` in both the `frontend` and `backend` directory seperately. In other words, run `npm run dev` for both the frontend and backend in separate terminal tabs:
 
@@ -89,7 +93,7 @@ cd backend
 npm run dev
 ```
 
-### 7. Login Credentials
+### 8. Login Credentials
 
 Username: `alice`
 
@@ -100,6 +104,8 @@ The login credentials will be saved for 1 hour, afterwards you need to login aga
 ## Making a Contribution
 
 These git actions can be performed anywhere in the project directory (unless there is a git submodule, which we don't in this example).
+
+Note that you should still be in your forked repository right now.
 
 ### 1. Create a Branch
 
