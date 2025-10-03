@@ -4,8 +4,6 @@
   <img width="100" alt="devs-logo" src="frontend/public/devs-favicon.svg" />
 </p>
 
-## Architecture
-
 ## Getting Started
 
 ### 1. Prerequisites
@@ -165,6 +163,8 @@ We are excited to announce the DEVS online contest platform 🎉🎉🎉! Howeve
 #### E1: No Sekrit Dokuments
 
 Currently, when you make a submission the expected value will be shown in the submissions tab. We don't want that! Remove it on the frontend.
+
+![console](/frontend/public/images/console.png)
 
 #### E2: One Minute to Midnight
 
