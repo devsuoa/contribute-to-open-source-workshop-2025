@@ -142,6 +142,9 @@ The description usually includes:
 
 - A description on the purpose and effect of the change
 - How to test if the change works as intended
+- Make sure to link the issue (in the `Development` tab on the side)!
+
+![issue](/images/issue.png)
 
 ### 5. Checks and Review
 
