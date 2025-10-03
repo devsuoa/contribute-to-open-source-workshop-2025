@@ -170,7 +170,7 @@ Add some visual effects to the competition timer when there is less than 1 minut
 
 ### Medium
 
-#### M1: Seeing Double
+#### M1: Making History
 
 In `backend/src/routes/api/submissions.ts`, the POST method to make a submission will create a new entry to the `competition_user_status` table every time a submission is made. We don't need to do that if the user already has a previous entry to this competition!
 
@@ -182,7 +182,7 @@ Some paths are not protected, meaning that the user can land directly on them by
 
 ### Hard
 
-#### H1: New Guy Onboard
+#### H1: Just the Beginning
 
 Instead of using mock users, we want new users to be able to register themselves. Implement a registration page and the corresponding backend logic that adds the new user to the database.
 
