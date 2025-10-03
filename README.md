@@ -24,6 +24,8 @@ node -v
 
 Fork the repository as shown in the image below. Then all of your changes should be on your fork!
 
+![fork](/frontend/public/images/fork.png)
+
 ### 3. Clone the Forked Repository
 
 ```bash
@@ -105,7 +107,7 @@ The login credentials will be saved for 1 hour, afterwards you need to login aga
 
 These git actions can be performed anywhere in the project directory (unless there is a git submodule, which we don't in this example).
 
-Note that you should still be in your forked repository right now.
+Note that you should still be in your **forked repository** right now.
 
 ### 1. Create a Branch
 
@@ -126,19 +128,19 @@ git commit -m "Your commit message"
 
 ### 3. Push Changes
 
-Push you changes so everyone else can see them:
+Push you changes to Github:
 
 ```bash
-git push origin your-branch-name
+git push
 ```
 
-After sucessfully pushing, you should be able to see a notification on GitHub to create a pull request.
+After sucessfully pushing, you should be able to see that your branch is ahead of the original repo and you can create a pull request. If other people have made changes and have merged into the original repo, click "Sync fork" to update your fork first.
 
-![pr](/frontend/public/images/pr.png)
+![pr](/frontend/public/images/contribute.png)
 
 ### 4. Create a Pull Request
 
-Click on "Compare & pull request", add a description of your changes, and submit the pull request.
+Click on "Open pull request", add a description of your changes, and submit the pull request.
 
 The description usually includes:
 
@@ -158,7 +160,7 @@ npm run format
 npm run lint
 ```
 
-Then commit these automatic changes and push again.
+Then commit these automatic changes and push again. Your pull request will be updated automatically so don't need to create a new one.
 
 ## Activities
 

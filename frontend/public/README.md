@@ -16,14 +16,20 @@ Node.js can be installed [here](https://nodejs.org/en/download). Once downloaded
 node -v
 ```
 
-### 2. Clone the Repository
+### 2. Fork the Repository
+
+Fork the repository as shown in the image below. Then all of your changes should be on your fork!
+
+![fork](/images/fork.png)
+
+### 3. Clone the Forked Repository
 
 ```bash
-git clone https://github.com/devsuoa/contribute-to-open-source-workshop-2025.git
+git clone <your_repo>
 cd contribute-to-open-source-workshop-2025
 ```
 
-### 3. Environment Variables
+### 4. Environment Variables
 
 There are two `.env` files. One of them should be placed in the `frontend` folder, the other should be placed in the `backend` folder.
 
@@ -45,7 +51,7 @@ Your project tree should look like this:
 
 ‼️‼️Note that this is for demonstration purposes only. **DO NOT** ever leak your `.env` content to the public, treat them like passwords.
 
-### 4. Install Dependencies
+### 5. Install Dependencies
 
 `npm install` in both the `frontend` and `backend` directory seperately:
 
@@ -61,7 +67,7 @@ npm install
 
 ![install](/images/install.png)
 
-### 5. Initialise Database
+### 6. Initialise Database
 
 Run the `init-db.ts` script in `backend/src/db` by the following command (while in the `backend` directory):
 
@@ -71,7 +77,7 @@ npm run init-db
 
 This will clear the existing database and populate it with the values defined in the script. The database is located at `backend/database.sqlite`.
 
-### 6. Start the App
+### 7. Start the App
 
 `npm run dev` in both the `frontend` and `backend` directory seperately. In other words, run `npm run dev` for both the frontend and backend in separate terminal tabs:
 
@@ -85,7 +91,7 @@ cd backend
 npm run dev
 ```
 
-### 7. Login Credentials
+### 8. Login Credentials
 
 Username: `alice`
 
@@ -96,6 +102,8 @@ The login credentials will be saved for 1 hour, afterwards you need to login aga
 ## Making a Contribution
 
 These git actions can be performed anywhere in the project directory (unless there is a git submodule, which we don't in this example).
+
+Note that you should still be in your **forked repository** right now.
 
 ### 1. Create a Branch
 
@@ -116,19 +124,19 @@ git commit -m "Your commit message"
 
 ### 3. Push Changes
 
-Push you changes so everyone else can see them:
+Push you changes to Github:
 
 ```bash
-git push origin your-branch-name
+git push
 ```
 
-After sucessfully pushing, you should be able to see a notification on GitHub to create a pull request.
+After sucessfully pushing, you should be able to see that your branch is ahead of the original repo and you can create a pull request. If other people have made changes and have merged into the original repo, click "Sync fork" to update your fork first.
 
-![pr](/images/pr.png)
+![pr](/images/contribute.png)
 
 ### 4. Create a Pull Request
 
-Click on "Compare & pull request", add a description of your changes, and submit the pull request.
+Click on "Open pull request", add a description of your changes, and submit the pull request.
 
 The description usually includes:
 
@@ -148,7 +156,7 @@ npm run format
 npm run lint
 ```
 
-Then commit these automatic changes and push again.
+Then commit these automatic changes and push again. Your pull request will be updated automatically so don't need to create a new one.
 
 ## Activities
 
