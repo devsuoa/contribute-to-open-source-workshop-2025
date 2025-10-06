@@ -91,6 +91,22 @@ const StatusBarCompetition = () => {
     };
   }, [competitionId, userId]);
 
+  // COMPARISON
+  function isTimeLessThanMin(time: string): boolean {
+    function timeToSeconds(timeString: string) {
+      const parts = timeString.split(":");
+      const hours = parseInt(parts[0], 10);
+      const minutes = parseInt(parts[1], 10);
+      const seconds = parseInt(parts[2], 10);
+      return hours * 3600 + minutes * 60 + seconds;
+    }
+
+    if (timeToSeconds(time) < 60) {
+      return true;
+    }
+    return false;
+  }
+
   return (
     <div className={styles.statusBar}>
       {/* Left: Logo & Navigation */}
@@ -147,13 +163,24 @@ const StatusBarCompetition = () => {
           <span className={pillClasses}>
             <FontAwesomeIcon icon={faClock} className="text-[#808CF8]" />
             <span className="sr-only">Ends in:</span>
-            <span
-              className="font-semibold text-white font-mono
-              [font-variant-numeric:tabular-nums] inline-block
-              text-right min-w-[9ch] pr-0.5 whitespace-nowrap"
-            >
-              {countdown}
-            </span>
+            {isTimeLessThanMin(countdown) ? (
+              <span
+                className="font-semibold text-white font-mono
+                  [font-variant-numeric:tabular-nums] inline-block
+                  text-right min-w-[9ch] pr-0.5 whitespace-nowrap"
+                style={{ color: "red" }}
+              >
+                {countdown}{" "}
+              </span>
+            ) : (
+              <span
+                className="font-semibold text-white font-mono
+                [font-variant-numeric:tabular-nums] inline-block
+                text-right min-w-[9ch] pr-0.5 whitespace-nowrap"
+              >
+                {countdown}{" "}
+              </span>
+            )}
           </span>
         </div>
 
