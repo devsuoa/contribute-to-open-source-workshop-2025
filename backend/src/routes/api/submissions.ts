@@ -1,7 +1,12 @@
 import express, { Request, Response } from "express";
-import { Submission } from "../../types/types";
-import { createSubmission, getSubmissions } from "../../db/db-utils";
-
+import { CompetitionUserStatus, Submission } from "../../types/types";
+import { 
+  createSubmission, 
+  getSubmissions, 
+  getUserCompetitionStatus,
+  createUserCompetitionStatus,
+  updateUserCompetitionStatus
+} from "../../db/db-utils";
 const router = express.Router();
 
 /*
@@ -20,7 +25,24 @@ router.post("/", async (req: Request, res: Response) => {
       submitted_at: new Date(),
       verdict,
     };
+
     await createSubmission(newSubmission);
+
+    const existingStatus = await getUserCompetitionStatus(user, competition);
+
+     if (!existingStatus) {
+      await createUserCompetitionStatus(user, competition);
+      
+    } else {
+      const updatedStatus: CompetitionUserStatus = {
+        competition_id: competition,
+        user_id: user,
+        points: existingStatus.points, 
+      };
+
+      await updateUserCompetitionStatus(updatedStatus);
+    }
+
     res.status(201).json({ message: "Submission created successfully" });
   } catch (error) {
     console.error("Error creating submission:", error);
