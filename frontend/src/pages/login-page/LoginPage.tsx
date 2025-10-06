@@ -19,7 +19,7 @@ const LoginPage = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/users/login`,
-        { username, password },
+        { username: username.trim(), password: password.trim() },
         { withCredentials: true },
       );
       setUserId(res.data.userId);
