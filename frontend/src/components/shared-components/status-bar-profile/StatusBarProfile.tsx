@@ -14,8 +14,7 @@ import placeholder from "@/assets/avatar-placeholder.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 
-const linkClasses =
-  "flex items-center gap-2 px-3 py-1 rounded-md font-medium hover:bg-muted transition-colors";
+const linkClasses = "flex items-center gap-2 px-3 py-1 rounded-md font-medium hover:bg-muted transition-colors";
 const activeClasses = "bg-muted";
 
 const StatusBarProfile = () => {
@@ -24,21 +23,18 @@ const StatusBarProfile = () => {
 
   return (
     <div className={styles.statusBar}>
-      {/* Logo */}
-      <img src={Logo} alt="Statusbar Logo" className={styles.logo} />
+      <div className="flex">
+        {/* Logo */}
+        <img src={Logo} alt="Statusbar Logo" className={styles.logo} />
 
-      {/* Centre: Nav Links */}
-      <nav className="flex items-center gap-2">
-        <NavLink
-          to={`/docs`}
-          className={({ isActive }) =>
-            `${linkClasses} ${isActive ? activeClasses : ""}`
-          }
-        >
-          <FontAwesomeIcon icon={faBook} className="text-sky-400" />
-          Documentation
-        </NavLink>
-      </nav>
+        {/* Centre: Nav Links */}
+        <nav className="flex items-center gap-2">
+          <NavLink to={`/docs`} className={({ isActive }) => `${linkClasses} ${isActive ? activeClasses : ""}`}>
+            <FontAwesomeIcon icon={faBook} className="text-sky-400" />
+            Documentation
+          </NavLink>
+        </nav>
+      </div>
 
       {/* Avatar + Dropdown */}
       <DropdownMenu modal={false}>
@@ -47,10 +43,7 @@ const StatusBarProfile = () => {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className={styles.menuContent}>
-          <DropdownMenuItem
-            className={styles.menuItem}
-            onSelect={() => console.log("Edit account")}
-          >
+          <DropdownMenuItem className={styles.menuItem} onSelect={() => console.log("Edit account")}>
             Edit account
           </DropdownMenuItem>
 

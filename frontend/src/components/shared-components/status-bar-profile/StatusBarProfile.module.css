@@ -5,7 +5,7 @@
 }
 
 .logo {
-  @apply h-12 w-auto hover:opacity-80 transition-opacity;
+  @apply h-12 w-auto hover:opacity-80 transition-opacity mr-4;
 }
 
 .avatar {
