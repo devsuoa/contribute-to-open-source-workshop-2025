@@ -55,9 +55,9 @@ export default function ProblemTestsCard() {
                     )
                     .join(", ")}
                 </p>
-                <p>
+                {/* <p>
                   <strong>Expected:</strong> {String(expected)}
-                </p>
+                </p> */}
                 {!pass && (
                   <p className={styles.error}>
                     <strong>Error!</strong>
